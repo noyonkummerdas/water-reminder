@@ -28,7 +28,7 @@ export default function LoginScreen() {
                             <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px] mb-4 ml-4">Email Address</Text>
                             <View className="relative">
                                 <TextInput
-                                    className="bg-white p-6 pl-16 rounded-[32px] shadow-sm border border-slate-50 text-[#1E293B] font-black text-lg"
+                                    className="bg-white p-6 pl-16 rounded-[32px] shadow-sm border border-slate-50 font-semibold text-sm"
                                     placeholder="name@example.com"
                                     keyboardType="email-address"
                                     autoCapitalize="none"
@@ -48,7 +48,7 @@ export default function LoginScreen() {
                             </View>
                             <View className="relative">
                                 <TextInput
-                                    className="bg-white p-6 pl-16 rounded-[32px] shadow-sm border border-slate-50 text-[#1E293B] font-black text-lg"
+                                    className="bg-white p-6 pl-16 rounded-[32px] shadow-sm border border-slate-50 text-sm"
                                     placeholder="••••••••"
                                     secureTextEntry
                                 />
