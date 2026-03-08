@@ -3,10 +3,9 @@ import { View, Text, ScrollView, TouchableOpacity, Dimensions } from 'react-nati
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ChevronLeft, Calendar as CalendarIcon, Droplets, TrendingUp, ChevronRight } from 'lucide-react-native';
 import { router } from 'expo-router';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect } from 'expo-router';
 import Svg, { Circle } from 'react-native-svg';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { INTAKE_HISTORY_KEY, USER_PROFILE_KEY, getTodayStr, DayData } from '../../utils/storage';
+import { getTodayStr, getIntakeForDate, getProfile, UserProfile } from '../../utils/storage';
 
 const { width } = Dimensions.get('window');
 
@@ -14,47 +13,54 @@ export default function AnalyticsScreen() {
     const todayStr = getTodayStr();
     const [selectedDate, setSelectedDate] = useState(todayStr);
     const [viewMode, setViewMode] = useState<'week' | 'month'>('week');
-    const [history, setHistory] = useState<Record<string, DayData>>({});
-    const [currentProfileGoal, setCurrentProfileGoal] = useState(2500);
+    const [history, setHistory] = useState<Record<string, any>>({});
+    const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
 
-    const loadHistory = useCallback(async () => {
+    const loadData = useCallback(async () => {
+        setIsLoading(true);
         try {
-            const historyData = await AsyncStorage.getItem(INTAKE_HISTORY_KEY);
-            const profileData = await AsyncStorage.getItem(USER_PROFILE_KEY);
+            const profile = await getProfile();
+            setUserProfile(profile);
+            const defaultGoal = profile?.dailyGoal || 2500;
+            const userId = profile?.id || 'default';
 
-            if (historyData) setHistory(JSON.parse(historyData));
-            if (profileData) {
-                const profile = JSON.parse(profileData);
-                setCurrentProfileGoal(profile.dailyGoal || 2500);
+            const newHistory: Record<string, any> = {};
+            // Load last 30 days to cover both week and month views
+            for (let i = 30; i >= 0; i--) {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                const dateStr = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+                const dayData = await getIntakeForDate(dateStr, defaultGoal, userId);
+                newHistory[dateStr] = dayData;
             }
+            setHistory(newHistory);
         } catch (e) {
             console.error("Failed to load history", e);
+        } finally {
+            setIsLoading(false);
         }
     }, []);
 
     useFocusEffect(
         useCallback(() => {
-            loadHistory();
-        }, [loadHistory])
+            loadData();
+        }, [loadData])
     );
 
-    // Get data for selected date
     const dayData = useMemo(() => {
-        return history[selectedDate] || { intake: 0, goal: currentProfileGoal };
-    }, [history, selectedDate, currentProfileGoal]);
+        return history[selectedDate] || { intake: 0, goal: userProfile?.dailyGoal || 2500 };
+    }, [history, selectedDate, userProfile]);
 
     const percentage = dayData.goal > 0 ? Math.min(Math.round((dayData.intake / dayData.goal) * 100), 100) : 0;
 
-    // Calendar Calculations
     const currentDate = new Date();
     const currentMonthLabel = currentDate.toLocaleString('default', { month: 'long' });
     const currentYear = currentDate.getFullYear();
     const currentMonthIndex = currentDate.getMonth();
     const daysInMonth = new Date(currentYear, currentMonthIndex + 1, 0).getDate();
-
     const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-    // Circle Math
     const radius = 42;
     const circumference = 2 * Math.PI * radius;
     const strokeDashoffset = circumference - (percentage / 100) * circumference;
@@ -67,10 +73,11 @@ export default function AnalyticsScreen() {
         return `${y}-${m}-${d}`;
     };
 
+    if (isLoading && !userProfile) return null;
+
     return (
         <SafeAreaView className="flex-1 bg-[#F8FAFB]" edges={['top']}>
             <View className="flex-1">
-                {/* Header */}
                 <View className="px-6 py-4 flex-row justify-between items-center">
                     <TouchableOpacity
                         onPress={() => router.back()}
@@ -83,7 +90,6 @@ export default function AnalyticsScreen() {
                 </View>
 
                 <ScrollView className="flex-1" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 120 }}>
-                    {/* View Mode Toggle */}
                     <View className="px-6 py-4 flex-row justify-between items-center">
                         <TouchableOpacity
                             onPress={() => setViewMode(viewMode === 'week' ? 'month' : 'week')}
@@ -99,22 +105,18 @@ export default function AnalyticsScreen() {
                         </TouchableOpacity>
                     </View>
 
-                    {/* Horizontal Calendar */}
                     <View className="px-6 mb-6">
                         <View className="bg-white p-6 rounded-[20px] shadow-lg border border-slate-100">
                             <ScrollView horizontal showsHorizontalScrollIndicator={false} className="flex-row">
                                 {Array.from({ length: viewMode === 'week' ? 10 : daysInMonth }, (_, i) => {
                                     const dayNum = viewMode === 'week' ? (currentDate.getDate() - 9 + i) : (i + 1);
                                     const dateStr = formatDateStr(dayNum);
-
                                     const tempDate = new Date(currentYear, currentMonthIndex, dayNum);
                                     const dayName = weekDays[tempDate.getDay()];
                                     const displayDay = tempDate.getDate();
-
                                     const isSelected = selectedDate === dateStr;
                                     const isToday = todayStr === dateStr;
-
-                                    const dayStats = history[dateStr] || { intake: 0, goal: currentProfileGoal };
+                                    const dayStats = history[dateStr] || { intake: 0, goal: userProfile?.dailyGoal || 2500 };
                                     const hasData = dayStats.intake > 0;
                                     const isCompleted = dayStats.intake >= dayStats.goal;
 
@@ -146,7 +148,6 @@ export default function AnalyticsScreen() {
                         </View>
                     </View>
 
-                    {/* Progress Card */}
                     <View className="px-6 py-4">
                         <View className="bg-white p-8 rounded-[10px] shadow-lg border border-slate-100">
                             <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px] mb-6">
@@ -183,7 +184,6 @@ export default function AnalyticsScreen() {
                         </View>
                     </View>
 
-                    {/* Stats Summary */}
                     <View className="px-6 py-2 flex-row justify-between">
                         <View className="flex-1 bg-white p-6 rounded-[30px] shadow-sm border border-slate-100 mr-2">
                             <View className="bg-[#E6F4FE] w-12 h-12 items-center justify-center rounded-xl mb-4">

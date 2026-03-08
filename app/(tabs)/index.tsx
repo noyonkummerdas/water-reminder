@@ -15,9 +15,10 @@ export default function HomeScreen() {
         setIsLoading(true);
         const profile = await getProfile();
         const defaultGoal = profile?.dailyGoal || 2500;
+        const userId = profile?.id || 'default';
 
         // Load intake and goal for today
-        const todayData = await getIntakeForDate(getTodayStr(), defaultGoal);
+        const todayData = await getIntakeForDate(getTodayStr(), defaultGoal, userId);
 
         if (profile) setUserProfile(profile);
         setConsumption(todayData.intake);
@@ -42,7 +43,7 @@ export default function HomeScreen() {
 
     const handleQuickAdd = async (amount: number) => {
         if (isGoalReached) return;
-        const newTotal = await saveIntake(amount, dailyGoal);
+        const newTotal = await saveIntake(amount, dailyGoal, userProfile?.id || 'default');
         setConsumption(newTotal);
     };
 

@@ -4,7 +4,7 @@ import { router } from 'expo-router';
 import { Mail, Lock, User, ArrowRight, ChevronLeft } from 'lucide-react-native';
 import React, { useState } from 'react';
 
-import { clearIntakeHistory } from '../../utils/storage';
+import { clearAllData } from '../../utils/storage';
 
 export default function SignupScreen() {
     const [name, setName] = useState('');
@@ -25,8 +25,8 @@ export default function SignupScreen() {
             return;
         }
 
-        // Clear previous user's history for a clean start
-        await clearIntakeHistory();
+        // Clear all previous user data for a clean start
+        await clearAllData();
 
         // Proceed to profile setup
         router.replace('/profile-setup');

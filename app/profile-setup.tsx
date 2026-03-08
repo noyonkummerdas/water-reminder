@@ -124,15 +124,20 @@ export default function ProfileSetupScreen() {
                 finalHeight = String(Math.round((f * 30.48) + (i * 2.54)));
             }
 
+            const userId = 'user_' + Math.random().toString(36).substr(2, 9);
+            const today = new Date().toISOString().split('T')[0];
+
             const userData = {
                 ...profile,
+                id: userId,
                 height: finalHeight,
                 heightUnit,
                 feet: heightUnit === 'ft' ? feet : '',
                 inches: heightUnit === 'ft' ? inches : '',
                 dailyGoal,
                 setupComplete: true,
-                onboardingDate: new Date().toISOString()
+                onboardingDate: new Date().toISOString(),
+                lastActiveDate: today
             };
 
             try {
