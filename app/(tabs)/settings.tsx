@@ -40,12 +40,12 @@ export default function SettingsScreen() {
             className={`flex-row items-center justify-between py-5 ${showBorder ? 'border-b border-slate-50' : ''}`}
         >
             <View className="flex-row items-center">
-                <View className="w-11 h-11 items-center justify-center rounded-2xl bg-slate-50 mr-4 border border-slate-100/50 shadow-sm">
-                    <Icon size={22} color={color || "#64748B"} strokeWidth={2.5} />
+                <View className="w-11 h-11 items-center justify-center rounded-2xl bg-slate-50/50 mr-4">
+                    <Icon size={20} color={color || "#94A3B8"} strokeWidth={2} />
                 </View>
-                <Text className="text-[#1E293B] font-black text-base">{label}</Text>
+                <Text className="text-[#334155] font-medium text-base">{label}</Text>
             </View>
-            <ChevronRight size={20} color="#CBD5E1" strokeWidth={2.5} />
+            <ChevronRight size={18} color="#CBD5E1" strokeWidth={2} />
         </TouchableOpacity>
     );
 
@@ -91,7 +91,7 @@ export default function SettingsScreen() {
                 <View className="py-6">
                     <TouchableOpacity
                         onPress={handleProfileEdit}
-                        className="bg-white p-6 rounded-[44px] shadow-sm border border-slate-50 flex-row items-center"
+                        className="bg-white p-6 rounded-[20px] shadow-sm border border-slate-50 flex-row items-center"
                     >
                         <View className="w-16 h-16 rounded-full bg-slate-100 border-2 border-white shadow-sm overflow-hidden mr-4 items-center justify-center">
                             <User size={30} color="#00BDD6" />
@@ -112,25 +112,25 @@ export default function SettingsScreen() {
                 {/* Physical Information Sections */}
                 <View className="mb-8">
                     <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px] mb-4 ml-4">Body Profile</Text>
-                    <View className="bg-white px-6 rounded-[36px] shadow-sm border border-slate-50">
+                    <View className="bg-white px-6 rounded-[20px] shadow-sm border border-slate-50">
                         <SettingItem
                             icon={User}
                             label={`Weight: ${userProfile?.weight || '--'} kg`}
-                            color="#00BDD6"
+                            color="#7DD3FC"
                             showBorder={true}
                             onPress={handleProfileEdit}
                         />
                         <SettingItem
                             icon={Info}
                             label={`Height: ${userProfile?.height || '--'} cm`}
-                            color="#F59E0B"
+                            color="#FCD34D"
                             showBorder={true}
                             onPress={handleProfileEdit}
                         />
                         <SettingItem
                             icon={Droplets}
                             label={`Daily Goal: ${userProfile?.dailyGoal || '--'} ml`}
-                            color="#00BDD6"
+                            color="#7DD3FC"
                             showBorder={false}
                             onPress={handleProfileEdit}
                         />
@@ -140,29 +140,29 @@ export default function SettingsScreen() {
                 {/* Static Options with Interactions */}
                 <View className="mb-10">
                     <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px] mb-4 ml-4">App Settings</Text>
-                    <View className="bg-white px-6 rounded-[44px] shadow-sm border border-slate-50">
+                    <View className="bg-white px-6 rounded-[20px] shadow-sm border border-slate-50">
                         <SettingItem
                             icon={Lock}
                             label="Change Password"
-                            color="#EF4444"
+                            color="#FCA5A5"
                             onPress={() => router.push('/settings/password')}
                         />
                         <SettingItem
                             icon={Users}
                             label="Invite Friends"
-                            color="#22C55E"
+                            color="#86EFAC"
                             onPress={() => router.push('/settings/invite')}
                         />
                         <SettingItem
                             icon={HelpCircle}
                             label="FAQs & Support"
-                            color="#6366F1"
+                            color="#A5B4FC"
                             onPress={() => router.push('/settings/faq')}
                         />
                         <SettingItem
                             icon={Info}
                             label="About AquaFlow"
-                            color="#64748B"
+                            color="#94A3B8"
                             showBorder={false}
                             onPress={() => router.push('/settings/about')}
                         />
