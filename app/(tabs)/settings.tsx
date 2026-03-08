@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
@@ -14,7 +14,6 @@ import {
     Droplets,
 } from 'lucide-react-native';
 import { router } from 'expo-router';
-import { useFocusEffect } from 'expo-router';
 import { getProfile, UserProfile } from '../../utils/storage';
 
 export default function SettingsScreen() {
@@ -27,16 +26,13 @@ export default function SettingsScreen() {
                 setUserProfile(profile);
             }
         } catch (error) {
-            console.error("Error loading profile:", error);
+            console.error("Settings: Error loading profile:", error);
         }
     }, []);
 
-    useFocusEffect(
-        useCallback(() => {
-            loadProfile();
-            return () => { };
-        }, [loadProfile])
-    );
+    useEffect(() => {
+        loadProfile();
+    }, [loadProfile]);
 
     const SettingItem = ({ icon: Icon, label, color, onPress, showBorder = true }: any) => (
         <TouchableOpacity

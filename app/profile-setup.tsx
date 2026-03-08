@@ -9,87 +9,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 const { width } = Dimensions.get('window');
 
-const HeightPicker = React.memo(({ heightUnit, setHeightUnit, feet, setFeet, inches, setInches, profile, hValue, onHeightChange }: any) => {
-    const estimatedHeight = useMemo(() => {
-        if (heightUnit === 'ft') {
-            return `Estimated: ${Math.round((parseInt(feet) || 0) * 30.48 + (parseInt(inches) || 0) * 2.54)} cm`;
-        } else {
-            return `Estimated: ${((parseFloat(hValue) || 0) / 30.48).toFixed(1)} feet`;
-        }
-    }, [heightUnit, feet, inches, hValue]);
-
-    return (
-        <View className="items-center py-4">
-            <Text className="text-[#1E293B] font-black text-2xl mb-3">What is your <Text className="text-[#00BDD6]">height?</Text></Text>
-            <Text className="text-[#94A3B8] text-xs text-center px-12 leading-5 mb-8 italic">We will use this data to calculate your body hydration needs.</Text>
-
-            <View className="flex-row bg-slate-100 p-1.5 rounded-[24px] mb-12 w-48 shadow-sm">
-                <TouchableOpacity
-                    onPress={() => setHeightUnit('ft')}
-                    className={`flex-1 py-3 rounded-[20px] items-center ${heightUnit === 'ft' ? 'bg-white shadow-sm' : ''}`}
-                >
-                    <Text className={`font-black text-xs uppercase tracking-widest ${heightUnit === 'ft' ? 'text-[#00BDD6]' : 'text-[#94A3B8]'}`}>Feet</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={() => setHeightUnit('cm')}
-                    className={`flex-1 py-3 rounded-[20px] items-center ${heightUnit === 'cm' ? 'bg-white shadow-sm' : ''}`}
-                >
-                    <Text className={`font-black text-xs uppercase tracking-widest ${heightUnit === 'cm' ? 'text-[#00BDD6]' : 'text-[#94A3B8]'}`}>CM</Text>
-                </TouchableOpacity>
-            </View>
-
-            <View className="items-center mb-10 w-full">
-                {heightUnit === 'ft' ? (
-                    <View className="flex-row justify-center space-x-6 items-center">
-                        <View className="items-center">
-                            <View className="bg-white px-6 py-4 rounded-[36px] shadow-sm border border-slate-50 items-center justify-center min-w-[100px]">
-                                <TextInput
-                                    className="text-[#1E293B] font-black text-6xl text-center"
-                                    keyboardType="numeric"
-                                    value={feet}
-                                    onChangeText={setFeet}
-                                    maxLength={1}
-                                />
-                            </View>
-                            <Text className="mt-4 text-[#00BDD6] font-black uppercase text-[10px] tracking-widest">Feet</Text>
-                        </View>
-                        <Text className="text-slate-200 font-black text-4xl mb-8">'</Text>
-                        <View className="items-center">
-                            <View className="bg-white px-8 py-6 rounded-[36px] shadow-sm border border-slate-50 items-center justify-center min-w-[100px]">
-                                <TextInput
-                                    className="text-[#1E293B] font-black text-6xl text-center"
-                                    keyboardType="numeric"
-                                    value={inches}
-                                    onChangeText={setInches}
-                                    maxLength={2}
-                                />
-                            </View>
-                            <Text className="mt-4 text-[#00BDD6] font-black uppercase text-[10px] tracking-widest">Inches</Text>
-                        </View>
-                    </View>
-                ) : (
-                    <View className="bg-white px-10 py-6 rounded-[36px] shadow-sm border border-slate-50 flex-row items-baseline justify-center min-w-[180px]">
-                        <TextInput
-                            className="text-[#1E293B] font-black text-6xl text-center mr-2"
-                            keyboardType="numeric"
-                            value={hValue}
-                            onChangeText={onHeightChange}
-                            maxLength={3}
-                        />
-                        <Text className="text-[#00BDD6] font-bold text-2xl">cm</Text>
-                    </View>
-                )}
-            </View>
-
-            <View className="px-10">
-                <Text className="text-[#94A3B8] text-center text-[10px] font-bold uppercase leading-5 italic bg-slate-50 py-4 rounded-3xl border border-slate-100">
-                    {estimatedHeight}
-                </Text>
-            </View>
-        </View>
-    );
-});
-
 export default function ProfileSetupScreen() {
     const [step, setStep] = useState(1);
     const [profile, setProfile] = useState({
@@ -97,12 +16,99 @@ export default function ProfileSetupScreen() {
         age: '',
         gender: 'male' as 'male' | 'female',
         weight: '70',
-        height: '175',
+        height: '',
     });
 
     const [heightUnit, setHeightUnit] = useState<'cm' | 'ft'>('ft');
-    const [feet, setFeet] = useState('5');
-    const [inches, setInches] = useState('7');
+    const [feet, setFeet] = useState('');
+    const [inches, setInches] = useState('');
+
+    const HeightPicker = ({ heightUnit, setHeightUnit, feet, setFeet, inches, setInches, hValue, onHeightChange }: any) => {
+        const estimatedHeight = Math.round(heightUnit === 'ft'
+            ? ((parseInt(feet) || 0) * 30.48 + (parseInt(inches) || 0) * 2.54)
+            : (parseFloat(hValue) || 0));
+
+        const displayEstimated = heightUnit === 'ft'
+            ? `Estimated: ${estimatedHeight} cm`
+            : `Estimated: ${(estimatedHeight / 30.48).toFixed(1)} feet`;
+
+        return (
+            <View className="items-center py-4">
+                <Text className="text-[#1E293B] font-black text-2xl mb-3">What is your <Text className="text-[#00BDD6]">height?</Text></Text>
+                <Text className="text-[#94A3B8] text-xs text-center px-12 leading-5 mb-8 italic">We will use this data to calculate your body hydration needs.</Text>
+
+                <View className="flex-row bg-slate-100 p-1.5 rounded-[24px] mb-12 w-48 shadow-sm">
+                    <TouchableOpacity
+                        onPress={() => setHeightUnit('ft')}
+                        className={`flex-1 py-3 rounded-[20px] items-center ${heightUnit === 'ft' ? 'bg-white shadow-sm' : ''}`}
+                    >
+                        <Text className={`font-black text-xs uppercase tracking-widest ${heightUnit === 'ft' ? 'text-[#00BDD6]' : 'text-[#94A3B8]'}`}>Feet</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => setHeightUnit('cm')}
+                        className={`flex-1 py-3 rounded-[20px] items-center ${heightUnit === 'cm' ? 'bg-white shadow-sm' : ''}`}
+                    >
+                        <Text className={`font-black text-xs uppercase tracking-widest ${heightUnit === 'cm' ? 'text-[#00BDD6]' : 'text-[#94A3B8]'}`}>CM</Text>
+                    </TouchableOpacity>
+                </View>
+
+                <View className="items-center mb-10 w-full">
+                    {heightUnit === 'ft' ? (
+                        <View className="flex-row justify-center space-x-6 items-center">
+                            <View className="items-center">
+                                <View className="bg-white px-6 py-4 rounded-[36px] shadow-sm border border-slate-50 items-center justify-center min-w-[100px]">
+                                    <TextInput
+                                        className="text-[#1E293B] font-black text-6xl text-center"
+                                        keyboardType="numeric"
+                                        placeholder="0"
+                                        placeholderTextColor="#E2E8F0"
+                                        value={feet}
+                                        onChangeText={setFeet}
+                                        maxLength={1}
+                                    />
+                                </View>
+                                <Text className="mt-4 text-[#00BDD6] font-black uppercase text-[10px] tracking-widest">Feet</Text>
+                            </View>
+                            <Text className="text-slate-200 font-black text-4xl mb-8">'</Text>
+                            <View className="items-center">
+                                <View className="bg-white px-8 py-6 rounded-[36px] shadow-sm border border-slate-50 items-center justify-center min-w-[100px]">
+                                    <TextInput
+                                        className="text-[#1E293B] font-black text-6xl text-center"
+                                        keyboardType="numeric"
+                                        placeholder="0"
+                                        placeholderTextColor="#E2E8F0"
+                                        value={inches}
+                                        onChangeText={setInches}
+                                        maxLength={2}
+                                    />
+                                </View>
+                                <Text className="mt-4 text-[#00BDD6] font-black uppercase text-[10px] tracking-widest">Inches</Text>
+                            </View>
+                        </View>
+                    ) : (
+                        <View className="bg-white px-10 py-6 rounded-[36px] shadow-sm border border-slate-50 flex-row items-baseline justify-center min-w-[180px]">
+                            <TextInput
+                                className="text-[#1E293B] font-black text-6xl text-center mr-2"
+                                keyboardType="numeric"
+                                placeholder="0"
+                                placeholderTextColor="#E2E8F0"
+                                value={hValue}
+                                onChangeText={onHeightChange}
+                                maxLength={3}
+                            />
+                            <Text className="text-[#00BDD6] font-bold text-2xl">cm</Text>
+                        </View>
+                    )}
+                </View>
+
+                <View className="px-10">
+                    <Text className="text-[#94A3B8] text-center text-[10px] font-bold uppercase leading-5 italic bg-slate-50 py-4 rounded-3xl border border-slate-100">
+                        {estimatedHeight > 0 ? displayEstimated : "Enter your height to see estimation"}
+                    </Text>
+                </View>
+            </View>
+        );
+    };
 
     const handleNext = async () => {
         if (step < 3) {
