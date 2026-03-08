@@ -1,9 +1,35 @@
-import { View, Text, TextInput, TouchableOpacity, ScrollView, Animated as RNAnimated, KeyboardAvoidingView, Platform } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, Animated as RNAnimated, KeyboardAvoidingView, Platform, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { Mail, Lock, ArrowRight, Github } from 'lucide-react-native';
 
 export default function LoginScreen() {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const handleLogin = () => {
+        if (!email.trim()) {
+            Alert.alert("Input Error", "Please enter your email address.");
+            return;
+        }
+        if (!email.includes('@')) {
+            Alert.alert("Input Error", "Please enter a valid email address.");
+            return;
+        }
+        if (!password.trim()) {
+            Alert.alert("Input Error", "Please enter your password.");
+            return;
+        }
+        if (password.length < 6) {
+            Alert.alert("Input Error", "Password must be at least 6 characters long.");
+            return;
+        }
+
+        // Proceed to home if everything is fine
+        router.replace('/(tabs)');
+    };
+
     return (
         <SafeAreaView className="flex-1 bg-[#F8FAFB]" edges={['top']}>
             <KeyboardAvoidingView
@@ -32,6 +58,8 @@ export default function LoginScreen() {
                                     placeholder="name@example.com"
                                     keyboardType="email-address"
                                     autoCapitalize="none"
+                                    value={email}
+                                    onChangeText={setEmail}
                                 />
                                 <View className="absolute left-6 top-6">
                                     <Mail size={22} color="#84dce6ff" strokeWidth={2.5} />
@@ -51,6 +79,8 @@ export default function LoginScreen() {
                                     className="bg-white p-5 pl-16 rounded-[28px] shadow-sm border border-slate-50 text-lg"
                                     placeholder="••••••••"
                                     secureTextEntry
+                                    value={password}
+                                    onChangeText={setPassword}
                                 />
                                 <View className="absolute left-6 top-6">
                                     <Lock size={20} color="#7FD7E0" strokeWidth={2.5} />
@@ -60,10 +90,9 @@ export default function LoginScreen() {
 
                         <TouchableOpacity
                             className="bg-[#00BDD6] py-4 rounded-[28px] shadow-xl flex-row items-center justify-center mb-10"
-                            onPress={() => router.replace('/(tabs)')}
+                            onPress={handleLogin}
                         >
                             <Text className="text-white font-black text-xl mr-3">Sign In</Text>
-
                         </TouchableOpacity>
                     </View>
 
