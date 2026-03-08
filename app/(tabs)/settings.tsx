@@ -14,22 +14,27 @@ import {
     Droplets,
 } from 'lucide-react-native';
 import { router } from 'expo-router';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect } from 'expo-router';
 import { getProfile, UserProfile } from '../../utils/storage';
 
 export default function SettingsScreen() {
     const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
 
     const loadProfile = useCallback(async () => {
-        const profile = await getProfile();
-        if (profile) {
-            setUserProfile(profile);
+        try {
+            const profile = await getProfile();
+            if (profile) {
+                setUserProfile(profile);
+            }
+        } catch (error) {
+            console.error("Error loading profile:", error);
         }
     }, []);
 
     useFocusEffect(
         useCallback(() => {
             loadProfile();
+            return () => { };
         }, [loadProfile])
     );
 

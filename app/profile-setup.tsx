@@ -9,7 +9,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 const { width } = Dimensions.get('window');
 
-const HeightPicker = ({ heightUnit, setHeightUnit, feet, setFeet, inches, setInches, profile, hValue, onHeightChange }: any) => {
+const HeightPicker = React.memo(({ heightUnit, setHeightUnit, feet, setFeet, inches, setInches, profile, hValue, onHeightChange }: any) => {
     const estimatedHeight = useMemo(() => {
         if (heightUnit === 'ft') {
             return `Estimated: ${Math.round((parseInt(feet) || 0) * 30.48 + (parseInt(inches) || 0) * 2.54)} cm`;
@@ -88,7 +88,7 @@ const HeightPicker = ({ heightUnit, setHeightUnit, feet, setFeet, inches, setInc
             </View>
         </View>
     );
-};
+});
 
 export default function ProfileSetupScreen() {
     const [step, setStep] = useState(1);
