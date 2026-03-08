@@ -4,12 +4,14 @@ import { router } from 'expo-router';
 import { Mail, Lock, User, ArrowRight, ChevronLeft } from 'lucide-react-native';
 import React, { useState } from 'react';
 
+import { clearIntakeHistory } from '../../utils/storage';
+
 export default function SignupScreen() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleSignUp = () => {
+    const handleSignUp = async () => {
         if (!name.trim()) {
             Alert.alert("Error", "Please enter your full name.");
             return;
@@ -22,6 +24,9 @@ export default function SignupScreen() {
             Alert.alert("Error", "Password must be at least 6 characters long.");
             return;
         }
+
+        // Clear previous user's history for a clean start
+        await clearIntakeHistory();
 
         // Proceed to profile setup
         router.replace('/profile-setup');
