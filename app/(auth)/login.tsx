@@ -26,15 +26,15 @@ export default function LoginScreen() {
                     <View className="mb-8">
                         <View className="mb-6">
                             <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px] mb-4 ml-4">Email Address</Text>
-                            <View className="relative">
+                            <View className="relative justify-center">
                                 <TextInput
-                                    className="bg-white p-6 pl-16 rounded-[32px] shadow-sm border border-slate-50 font-semibold text-sm"
+                                    className="bg-white p-5 pl-16 rounded-[28px] shadow-sm border border-slate-50 text-lg"
                                     placeholder="name@example.com"
                                     keyboardType="email-address"
                                     autoCapitalize="none"
                                 />
                                 <View className="absolute left-6 top-6">
-                                    <Mail size={22} color="#00BDD6" strokeWidth={2.5} />
+                                    <Mail size={22} color="#84dce6ff" strokeWidth={2.5} />
                                 </View>
                             </View>
                         </View>
@@ -43,27 +43,27 @@ export default function LoginScreen() {
                             <View className="flex-row justify-between items-center mb-4 ml-4">
                                 <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px]">Password</Text>
                                 <TouchableOpacity>
-                                    <Text className="text-[#00BDD6] text-[10px] font-black uppercase tracking-[1px]">Forgot?</Text>
+                                    <Text className="text-[#00BDD6] text-[10px] font-black uppercase tracking-[1px]">Forgot</Text>
                                 </TouchableOpacity>
                             </View>
                             <View className="relative">
                                 <TextInput
-                                    className="bg-white p-6 pl-16 rounded-[32px] shadow-sm border border-slate-50 text-sm"
+                                    className="bg-white p-5 pl-16 rounded-[28px] shadow-sm border border-slate-50 text-lg"
                                     placeholder="••••••••"
                                     secureTextEntry
                                 />
                                 <View className="absolute left-6 top-6">
-                                    <Lock size={22} color="#00BDD6" strokeWidth={2.5} />
+                                    <Lock size={20} color="#7FD7E0" strokeWidth={2.5} />
                                 </View>
                             </View>
                         </View>
 
                         <TouchableOpacity
-                            className="bg-[#00BDD6] py-6 rounded-[32px] shadow-xl flex-row items-center justify-center mb-10"
+                            className="bg-[#00BDD6] py-4 rounded-[28px] shadow-xl flex-row items-center justify-center mb-10"
                             onPress={() => router.replace('/(tabs)')}
                         >
                             <Text className="text-white font-black text-xl mr-3">Sign In</Text>
-                            <ArrowRight size={22} color="white" strokeWidth={3} />
+
                         </TouchableOpacity>
                     </View>
 

@@ -8,7 +8,7 @@ export default function SignupScreen() {
         <SafeAreaView className="flex-1 bg-[#F8FAFB]" edges={['top']}>
             <View className="px-6 py-4">
                 <TouchableOpacity
-                    onPress={() => router.back()}
+                    onPress={() => router.canGoBack() ? router.back() : router.replace('/(auth)/login')}
                     className="w-11 h-11 items-center justify-center rounded-2xl bg-white shadow-sm border border-slate-50"
                 >
                     <ChevronLeft size={22} color="#1E293B" />
@@ -29,52 +29,51 @@ export default function SignupScreen() {
                     <View className="mb-8">
                         <View className="mb-6">
                             <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px] mb-4 ml-4">Full Name</Text>
-                            <View className="relative">
+                            <View className="relative justify-center">
                                 <TextInput
-                                    className="bg-white p-6 pl-16 rounded-[32px] shadow-sm border border-slate-50 text-[#1E293B] font-black text-lg"
+                                    className="bg-white h-16 px-6 pl-16 rounded-[28px] shadow-sm border border-slate-50 text-[#1E293B] text-lg"
                                     placeholder="Cody Fisher"
                                 />
-                                <View className="absolute left-6 top-6">
-                                    <User size={22} color="#00BDD6" strokeWidth={2.5} />
+                                <View className="absolute left-6 h-full justify-center">
+                                    <User size={22} color="#7FD7E0" strokeWidth={2} />
                                 </View>
                             </View>
                         </View>
 
                         <View className="mb-6">
                             <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px] mb-4 ml-4">Email Address</Text>
-                            <View className="relative">
+                            <View className="relative justify-center">
                                 <TextInput
-                                    className="bg-white p-6 pl-16 rounded-[32px] shadow-sm border border-slate-50 text-[#1E293B] font-black text-lg"
+                                    className="bg-white h-16 px-6 pl-16 rounded-[28px] shadow-sm border border-slate-50 text-[#1E293B] text-lg"
                                     placeholder="name@example.com"
                                     keyboardType="email-address"
                                     autoCapitalize="none"
                                 />
-                                <View className="absolute left-6 top-6">
-                                    <Mail size={22} color="#00BDD6" strokeWidth={2.5} />
+                                <View className="absolute left-6 h-full justify-center">
+                                    <Mail size={22} color="#7FD7E0" strokeWidth={2} />
                                 </View>
                             </View>
                         </View>
 
                         <View className="mb-10">
                             <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px] mb-4 ml-4">Password</Text>
-                            <View className="relative">
+                            <View className="relative justify-center">
                                 <TextInput
-                                    className="bg-white p-6 pl-16 rounded-[32px] shadow-sm border border-slate-50 text-[#1E293B] font-black text-lg"
+                                    className="bg-white h-16 px-6 pl-16 rounded-[28px] shadow-sm border border-slate-50 text-[#1E293B] text-lg"
                                     placeholder="••••••••"
                                     secureTextEntry
                                 />
-                                <View className="absolute left-6 top-6">
-                                    <Lock size={22} color="#00BDD6" strokeWidth={2.5} />
+                                <View className="absolute left-6 h-full justify-center">
+                                    <Lock size={22} color="#7FD7E0" strokeWidth={2} />
                                 </View>
                             </View>
                         </View>
 
                         <TouchableOpacity
-                            className="bg-[#00BDD6] py-6 rounded-[32px] shadow-lg shadow-[#00BDD6]/40 flex-row items-center justify-center mb-10"
+                            className="bg-[#00BDD6] py-4 rounded-[32px] shadow-lg shadow-[#00BDD6]/40 flex-row items-center justify-center mb-10"
                             onPress={() => router.replace('/profile-setup')}
                         >
                             <Text className="text-white font-black text-xl mr-3">Sign Up</Text>
-                            <ArrowRight size={22} color="white" strokeWidth={3} />
                         </TouchableOpacity>
                     </View>
 

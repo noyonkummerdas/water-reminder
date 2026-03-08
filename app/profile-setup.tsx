@@ -143,7 +143,15 @@ export default function ProfileSetupScreen() {
             <SafeAreaView className="flex-1" edges={['top']}>
                 <View className="px-6 py-4 flex-row justify-between items-center">
                     <TouchableOpacity
-                        onPress={() => step > 1 ? setStep(step - 1) : router.back()}
+                        onPress={() => {
+                            if (step > 1) {
+                                setStep(step - 1);
+                            } else if (router.canGoBack()) {
+                                router.back();
+                            } else {
+                                router.replace('/(auth)/login');
+                            }
+                        }}
                         className="w-11 h-11 items-center justify-center rounded-2xl bg-white shadow-sm border border-slate-50"
                     >
                         <ChevronLeft size={22} color="#1E293B" />
