@@ -171,7 +171,7 @@ export default function SettingsScreen() {
 
                 {/* Big Sign Out Button */}
                 <TouchableOpacity
-                    className="bg-[#00BDD6] py-6 flex-row rounded-[32px] shadow-lg shadow-[#00BDD6]/40 items-center justify-center space-x-3 mb-12"
+                    className="bg-[#00BDD6] py-4 flex-row rounded-[32px] shadow-lg shadow-[#00BDD6]/40 items-center justify-center space-x-3 mb-12"
                     onPress={handleSignOut}
                 >
                     <LogOut size={20} color="white" strokeWidth={2.5} />
