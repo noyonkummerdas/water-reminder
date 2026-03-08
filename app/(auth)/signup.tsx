@@ -1,9 +1,32 @@
-import { View, Text, TextInput, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { Mail, Lock, User, ArrowRight, ChevronLeft } from 'lucide-react-native';
+import React, { useState } from 'react';
 
 export default function SignupScreen() {
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const handleSignUp = () => {
+        if (!name.trim()) {
+            Alert.alert("Error", "Please enter your full name.");
+            return;
+        }
+        if (!email.trim() || !email.includes('@')) {
+            Alert.alert("Error", "Please enter a valid email address.");
+            return;
+        }
+        if (password.length < 6) {
+            Alert.alert("Error", "Password must be at least 6 characters long.");
+            return;
+        }
+
+        // Proceed to profile setup
+        router.replace('/profile-setup');
+    };
+
     return (
         <SafeAreaView className="flex-1 bg-[#F8FAFB]" edges={['top']}>
             <View className="px-6 py-4">
@@ -33,6 +56,8 @@ export default function SignupScreen() {
                                 <TextInput
                                     className="bg-white h-16 px-6 pl-16 rounded-[28px] shadow-sm border border-slate-50 text-[#1E293B] text-lg"
                                     placeholder="Cody Fisher"
+                                    value={name}
+                                    onChangeText={setName}
                                 />
                                 <View className="absolute left-6 h-full justify-center">
                                     <User size={22} color="#7FD7E0" strokeWidth={2} />
@@ -48,6 +73,8 @@ export default function SignupScreen() {
                                     placeholder="name@example.com"
                                     keyboardType="email-address"
                                     autoCapitalize="none"
+                                    value={email}
+                                    onChangeText={setEmail}
                                 />
                                 <View className="absolute left-6 h-full justify-center">
                                     <Mail size={22} color="#7FD7E0" strokeWidth={2} />
@@ -62,6 +89,8 @@ export default function SignupScreen() {
                                     className="bg-white h-16 px-6 pl-16 rounded-[28px] shadow-sm border border-slate-50 text-[#1E293B] text-lg"
                                     placeholder="••••••••"
                                     secureTextEntry
+                                    value={password}
+                                    onChangeText={setPassword}
                                 />
                                 <View className="absolute left-6 h-full justify-center">
                                     <Lock size={22} color="#7FD7E0" strokeWidth={2} />
@@ -71,7 +100,7 @@ export default function SignupScreen() {
 
                         <TouchableOpacity
                             className="bg-[#00BDD6] py-4 rounded-[32px] shadow-lg shadow-[#00BDD6]/40 flex-row items-center justify-center mb-10"
-                            onPress={() => router.replace('/profile-setup')}
+                            onPress={handleSignUp}
                         >
                             <Text className="text-white font-black text-xl mr-3">Sign Up</Text>
                         </TouchableOpacity>

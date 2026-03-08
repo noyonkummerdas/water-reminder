@@ -27,7 +27,7 @@ export default function ChangePasswordScreen() {
         <SafeAreaView className="flex-1 bg-[#F8FAFB]" edges={['top']}>
             <View className="px-6 py-4 flex-row justify-between items-center">
                 <TouchableOpacity
-                    onPress={() => router.back()}
+                    onPress={() => router.canGoBack() ? router.back() : router.replace('/(tabs)/settings')}
                     className="w-11 h-11 items-center justify-center rounded-2xl bg-white shadow-sm border border-slate-50"
                 >
                     <ChevronLeft size={22} color="#1E293B" />
