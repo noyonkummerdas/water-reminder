@@ -5,6 +5,7 @@ import { router } from 'expo-router';
 import { ChevronLeft, ArrowRight } from 'lucide-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { USER_PROFILE_KEY } from '../utils/storage';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const { width } = Dimensions.get('window');
 
@@ -41,7 +42,7 @@ const HeightPicker = ({ heightUnit, setHeightUnit, feet, setFeet, inches, setInc
                 {heightUnit === 'ft' ? (
                     <View className="flex-row justify-center space-x-6 items-center">
                         <View className="items-center">
-                            <View className="bg-white px-8 py-6 rounded-[36px] shadow-sm border border-slate-50 items-center justify-center min-w-[100px]">
+                            <View className="bg-white px-6 py-4 rounded-[36px] shadow-sm border border-slate-50 items-center justify-center min-w-[100px]">
                                 <TextInput
                                     className="text-[#1E293B] font-black text-6xl text-center"
                                     keyboardType="numeric"
@@ -180,7 +181,7 @@ export default function ProfileSetupScreen() {
                                 <View className="mb-8">
                                     <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px] mb-4 ml-4">Your Name</Text>
                                     <TextInput
-                                        className="bg-white p-6 rounded-[32px] shadow-sm border border-slate-50 text-[#1E293B] font-black text-lg"
+                                        className="bg-white p-4 rounded-[32px] shadow-sm border border-slate-50 text-lg"
                                         placeholder="Cody Fisher"
                                         value={profile.name}
                                         onChangeText={(text) => setProfile({ ...profile, name: text })}
@@ -192,18 +193,33 @@ export default function ProfileSetupScreen() {
                                     <View className="flex-row justify-between">
                                         <TouchableOpacity
                                             onPress={() => setProfile({ ...profile, gender: 'male' })}
-                                            className={`w-[48%] py-8 rounded-[36px] items-center border ${profile.gender === 'male' ? 'bg-[#00BDD6] border-[#00BDD6]' : 'bg-white border-slate-50'}`}
+                                            className={`w-[48%] py-4 rounded-[36px] flex-row items-center justify-center border ${profile.gender === 'male' ? 'bg-[#00BDD6] border-[#00BDD6]' : 'bg-white border-slate-50'}`}
                                         >
-                                            <Text className={`font-black text-lg ${profile.gender === 'male' ? 'text-white' : 'text-[#CBD5E1]'}`}>Male</Text>
+                                            <MaterialCommunityIcons
+                                                name="human-male"
+                                                size={28}
+                                                color={profile.gender === 'male' ? 'white' : '#7FD7E0'}
+                                                style={{ marginRight: 8 }}
+                                            />
+                                            <Text className={`font-black text-lg ${profile.gender === 'male' ? 'text-white' : '#7FD7E0'}`}>Male</Text>
                                         </TouchableOpacity>
                                         <TouchableOpacity
                                             onPress={() => setProfile({ ...profile, gender: 'female' })}
-                                            className={`w-[48%] py-8 rounded-[36px] items-center border ${profile.gender === 'female' ? 'bg-[#00BDD6] border-[#00BDD6]' : 'bg-white border-slate-50'}`}
+                                            className={`w-[48%] py-4 rounded-[36px] flex-row items-center justify-center border ${profile.gender === 'female' ? 'bg-[#00BDD6] border-[#00BDD6]' : 'bg-white border-slate-50'}`}
                                         >
-                                            <Text className={`font-black text-lg ${profile.gender === 'female' ? 'text-white' : 'text-[#CBD5E1]'}`}>Female</Text>
+                                            <MaterialCommunityIcons
+                                                name="human-female"
+                                                size={28}
+                                                color={profile.gender === 'female' ? 'white' : '#7FD7E0'}
+                                                style={{ marginRight: 8 }}
+                                            />
+                                            <Text className={`font-black text-lg ${profile.gender === 'female' ? 'text-white' : '#7FD7E0'}`}>Female</Text>
                                         </TouchableOpacity>
                                     </View>
                                 </View>
+
+
+
                             </View>
                         )}
 
@@ -241,11 +257,10 @@ export default function ProfileSetupScreen() {
                         )}
 
                         <TouchableOpacity
-                            className="mt-14 bg-[#00BDD6] py-6 rounded-[32px] shadow-lg shadow-[#00BDD6]/40 flex-row items-center justify-center mb-20"
+                            className="mt-14 bg-[#00BDD6] py-4 rounded-[32px] shadow-lg shadow-[#00BDD6]/40 flex-row items-center justify-center mb-20"
                             onPress={handleNext}
                         >
                             <Text className="text-white font-black text-xl mr-3">Next</Text>
-                            <ArrowRight size={22} color="white" strokeWidth={3} />
                         </TouchableOpacity>
                     </ScrollView>
                 </KeyboardAvoidingView>
