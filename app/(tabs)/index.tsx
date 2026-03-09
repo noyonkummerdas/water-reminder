@@ -2,7 +2,7 @@ import { useRouter } from 'expo-router';
 import React, { useState, useCallback } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Plus, User, Clock, Bell, Droplet, PlusCircle, LayoutGrid, CheckCircle2 } from 'lucide-react-native';
+import { Plus, Clock, Bell, Droplet, PlusCircle, Languages, CheckCircle2 } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import { useColorScheme } from 'nativewind';
 import Svg, { Circle, G, Text as SvgText, Defs, LinearGradient, Stop, Path, Rect, ClipPath } from 'react-native-svg';
@@ -192,10 +192,15 @@ const BottleProgress = ({ percentage, consumption, goal, t }: any) => {
 };
 
 export default function HomeScreen() {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const router = useRouter();
     const { colorScheme } = useColorScheme();
     const isDark = colorScheme === 'dark';
+
+    const toggleLanguage = () => {
+        const newLang = i18n.language === 'en' ? 'bn' : 'en';
+        i18n.changeLanguage(newLang);
+    };
 
     const [consumption, setConsumption] = useState(0);
     const [logs, setLogs] = useState<any[]>([]);
@@ -292,10 +297,15 @@ export default function HomeScreen() {
                             {t("hello")}, {userName}
                         </Text>
                     </View>
-                    <View className="flex-row items-center space-x-3">
+                    <View className="flex-row items-center gap-2">
                         <ThemeToggle />
-                        <TouchableOpacity className="w-12 h-12 bg-white dark:bg-[#1E293B] rounded-2xl items-center justify-center shadow-sm border border-[#E0E0E0] dark:border-[#334155]">
-                            <User size={24} color="#0288D1" strokeWidth={2.5} />
+                        <TouchableOpacity
+                            onPress={toggleLanguage}
+                            className="w-12 h-12 bg-white dark:bg-[#1E293B] rounded-2xl items-center justify-center shadow-sm border border-[#E0E0E0] dark:border-[#334155]"
+                        >
+                            <Text className="text-[#0288D1] font-black text-xs">
+                                {i18n.language === 'en' ? 'বাং' : 'EN'}
+                            </Text>
                         </TouchableOpacity>
                     </View>
                 </View>
