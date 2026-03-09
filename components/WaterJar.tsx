@@ -66,8 +66,8 @@ export default function WaterJar({ percentage, ml }: WaterJarProps) {
             <Svg width="220" height="280" viewBox="0 0 100 100">
                 <Defs>
                     <LinearGradient id="waterGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <Stop offset="0%" stopColor="#22D3EE" />
-                        <Stop offset="100%" stopColor="#0891B2" />
+                        <Stop offset="0%" stopColor="#00BCD4" />
+                        <Stop offset="100%" stopColor="#0288D1" />
                     </LinearGradient>
 
                     <RadialGradient id="glassGloss" cx="30%" cy="30%" rx="30%" ry="30%" fx="30%" fy="30%">
@@ -90,8 +90,8 @@ export default function WaterJar({ percentage, ml }: WaterJarProps) {
                 {/* Main Jar Case (Glass) */}
                 <Path
                     d={jarPath}
-                    fill="#F1F5F9"
-                    stroke="rgba(0, 189, 214, 0.4)"
+                    fill="#F5F5F5"
+                    stroke="rgba(0, 188, 212, 0.4)"
                     strokeWidth="1.5"
                 />
 
@@ -128,16 +128,16 @@ export default function WaterJar({ percentage, ml }: WaterJarProps) {
                 <Path
                     d={jarPath}
                     fill="none"
-                    stroke="#00BDD6"
+                    stroke="#00BCD4"
                     strokeWidth="3.5"
-                    strokeOpacity="0.15"
+                    strokeOpacity="0.25"
                 />
 
                 {/* ML Indicator Label */}
                 <SvgText
                     x="50"
                     y="53"
-                    fill={fillLevel.value > 50 ? "white" : "#0F172A"}
+                    fill={fillLevel.value > 50 ? "white" : "#212121"}
                     fontSize="13"
                     fontWeight="900"
                     textAnchor="middle"

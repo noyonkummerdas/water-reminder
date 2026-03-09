@@ -38,13 +38,13 @@ export default function SignupScreen() {
     };
 
     return (
-        <SafeAreaView className="flex-1 bg-[#F8FAFB]" edges={['top']}>
+        <SafeAreaView className="flex-1 bg-white" edges={['top']}>
             <View className="px-6 py-4">
                 <TouchableOpacity
                     onPress={() => router.canGoBack() ? router.back() : router.replace('/(auth)/login')}
-                    className="w-11 h-11 items-center justify-center rounded-2xl bg-white shadow-sm border border-slate-50"
+                    className="w-11 h-11 items-center justify-center rounded-2xl bg-[#F5F5F5] border border-[#E0E0E0]"
                 >
-                    <ChevronLeft size={22} color="#1E293B" />
+                    <ChevronLeft size={22} color="#212121" strokeWidth={2.5} />
                 </TouchableOpacity>
             </View>
 
@@ -54,73 +54,86 @@ export default function SignupScreen() {
             >
                 <ScrollView className="flex-1 px-8" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 50 }}>
                     <View className="py-10">
-                        <Text className="text-[#1E293B] font-black text-4xl mb-3 leading-[50px]">{t("signup_title")}</Text>
-                        <Text className="text-[#94A3B8] text-lg font-medium">{t("signup_sub")}</Text>
+                        <Text className="text-[#212121] font-black text-4xl mb-3 leading-[50px] tracking-tight">{t("signup_title")}</Text>
+                        <Text className="text-[#757575] text-lg font-medium">{t("signup_sub")}</Text>
                     </View>
 
                     {/* Signup Form */}
                     <View className="mb-8">
                         <View className="mb-6">
-                            <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px] mb-4 ml-4">{t("full_name")}</Text>
+                            <View className="flex-row items-center mb-4 ml-4">
+                                <View className="w-1.5 h-1.5 rounded-full bg-[#00BCD4] mr-2" />
+                                <Text className="text-[#757575] text-[10px] font-black uppercase tracking-[2px]">{t("full_name")}</Text>
+                            </View>
                             <View className="relative justify-center">
                                 <TextInput
-                                    className="bg-white h-16 px-6 pl-16 rounded-[28px] shadow-sm border border-slate-50 text-[#1E293B] text-lg"
+                                    className="bg-[#F5F5F5] h-16 px-6 pl-16 rounded-[28px] border border-[#E0E0E0] text-[#212121] text-base"
                                     placeholder="Cody Fisher"
+                                    placeholderTextColor="#757575"
                                     value={name}
                                     onChangeText={setName}
                                 />
                                 <View className="absolute left-6 h-full justify-center">
-                                    <User size={22} color="#7FD7E0" strokeWidth={2} />
+                                    <User size={22} color="#00BCD4" strokeWidth={2.5} />
                                 </View>
                             </View>
                         </View>
 
                         <View className="mb-6">
-                            <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px] mb-4 ml-4">{t("email")}</Text>
+                            <View className="flex-row items-center mb-4 ml-4">
+                                <View className="w-1.5 h-1.5 rounded-full bg-[#00BCD4] mr-2" />
+                                <Text className="text-[#757575] text-[10px] font-black uppercase tracking-[2px]">{t("email")}</Text>
+                            </View>
                             <View className="relative justify-center">
                                 <TextInput
-                                    className="bg-white h-16 px-6 pl-16 rounded-[28px] shadow-sm border border-slate-50 text-[#1E293B] text-lg"
+                                    className="bg-[#F5F5F5] h-16 px-6 pl-16 rounded-[28px] border border-[#E0E0E0] text-[#212121] text-base"
                                     placeholder="name@example.com"
+                                    placeholderTextColor="#757575"
                                     keyboardType="email-address"
                                     autoCapitalize="none"
                                     value={email}
                                     onChangeText={setEmail}
                                 />
                                 <View className="absolute left-6 h-full justify-center">
-                                    <Mail size={22} color="#7FD7E0" strokeWidth={2} />
+                                    <Mail size={22} color="#00BCD4" strokeWidth={2.5} />
                                 </View>
                             </View>
                         </View>
 
                         <View className="mb-10">
-                            <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px] mb-4 ml-4">{t("password")}</Text>
+                            <View className="flex-row items-center mb-4 ml-4">
+                                <View className="w-1.5 h-1.5 rounded-full bg-[#00BCD4] mr-2" />
+                                <Text className="text-[#757575] text-[10px] font-black uppercase tracking-[2px]">{t("password")}</Text>
+                            </View>
                             <View className="relative justify-center">
                                 <TextInput
-                                    className="bg-white h-16 px-6 pl-16 rounded-[28px] shadow-sm border border-slate-50 text-[#1E293B] text-lg"
+                                    className="bg-[#F5F5F5] h-16 px-6 pl-16 rounded-[28px] border border-[#E0E0E0] text-[#212121] text-base"
                                     placeholder="••••••••"
+                                    placeholderTextColor="#E0E0E0"
                                     secureTextEntry
                                     value={password}
                                     onChangeText={setPassword}
                                 />
                                 <View className="absolute left-6 h-full justify-center">
-                                    <Lock size={22} color="#7FD7E0" strokeWidth={2} />
+                                    <Lock size={22} color="#00BCD4" strokeWidth={2.5} />
                                 </View>
                             </View>
                         </View>
 
                         <TouchableOpacity
-                            className="bg-[#00BDD6] py-4 rounded-[32px] shadow-lg shadow-[#00BDD6]/40 flex-row items-center justify-center mb-10"
+                            className="bg-[#0288D1] py-5 rounded-[32px] shadow-xl shadow-[#0288D1]/30 flex-row items-center justify-center mb-10"
                             onPress={handleSignUp}
                         >
-                            <Text className="text-white font-black text-xl mr-3">{t("sign_up")}</Text>
+                            <Text className="text-white font-black text-xl mr-3 tracking-tight">{t("sign_up")}</Text>
+                            <ArrowRight size={20} color="white" strokeWidth={3} />
                         </TouchableOpacity>
                     </View>
 
                     {/* Footer */}
                     <View className="flex-row justify-center items-center">
-                        <Text className="text-[#94A3B8] font-medium mr-2">{t("already_account")}</Text>
+                        <Text className="text-[#757575] font-bold mr-2 tracking-tight">{t("already_account")}</Text>
                         <TouchableOpacity onPress={() => router.replace('/(auth)/login')}>
-                            <Text className="text-[#00BDD6] font-black">{t("login")}</Text>
+                            <Text className="text-[#0288D1] font-black tracking-tighter">{t("login")}</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>

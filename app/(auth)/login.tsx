@@ -34,76 +34,85 @@ export default function LoginScreen() {
     };
 
     return (
-        <SafeAreaView className="flex-1 bg-[#F8FAFB]" edges={['top']}>
+        <SafeAreaView className="flex-1 bg-white" edges={['top']}>
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 className="flex-1"
             >
                 <ScrollView className="flex-1 px-8" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 50 }}>
                     {/* Logo / Header Area */}
-                    <View className="items-center py-16">
-                        <View className="bg-white p-6 rounded-[36px] shadow-sm border border-slate-50 mb-8">
-                            <View className="w-16 h-16 bg-[#00BDD6] rounded-2xl items-center justify-center">
-                                <View className="w-8 h-8 rounded-full border-4 border-white opacity-90" />
+                    <View className="items-center py-20">
+                        <View className="bg-[#F5F5F5] p-6 rounded-[44px] border border-[#E0E0E0] mb-8 shadow-sm">
+                            <View className="w-20 h-20 bg-[#0288D1] rounded-[32px] items-center justify-center shadow-lg shadow-[#0288D1]/40">
+                                <View className="w-10 h-10 rounded-full border-[6px] border-white opacity-90" />
                             </View>
                         </View>
-                        <Text className="text-[#1E293B] font-black text-4xl mb-3">{t("app_name")}</Text>
-                        <Text className="text-[#94A3B8] text-lg font-medium text-center px-4">{t("slogan")}</Text>
+                        <Text className="text-[#212121] font-black text-5xl mb-3 tracking-tighter">{t("app_name")}</Text>
+                        <Text className="text-[#757575] text-lg font-medium text-center px-4 tracking-tight">{t("slogan")}</Text>
                     </View>
 
                     {/* Login Form */}
                     <View className="mb-8">
                         <View className="mb-6">
-                            <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px] mb-4 ml-4">{t("email")}</Text>
+                            <View className="flex-row items-center mb-4 ml-4">
+                                <View className="w-1.5 h-1.5 rounded-full bg-[#00BCD4] mr-2" />
+                                <Text className="text-[#757575] text-[10px] font-black uppercase tracking-[2px]">{t("email")}</Text>
+                            </View>
                             <View className="relative justify-center">
                                 <TextInput
-                                    className="bg-white p-5 pl-16 rounded-[28px] shadow-sm border border-slate-50 text-lg"
+                                    className="bg-[#F5F5F5] p-5 pl-16 rounded-[28px] border border-[#E0E0E0] text-base text-[#212121]"
                                     placeholder="name@example.com"
+                                    placeholderTextColor="#757575"
                                     keyboardType="email-address"
                                     autoCapitalize="none"
                                     value={email}
                                     onChangeText={setEmail}
                                 />
                                 <View className="absolute left-6 top-6">
-                                    <Mail size={22} color="#84dce6ff" strokeWidth={2.5} />
+                                    <Mail size={22} color="#00BCD4" strokeWidth={2.5} />
                                 </View>
                             </View>
                         </View>
 
-                        <View className="mb-8">
+                        <View className="mb-10">
                             <View className="flex-row justify-between items-center mb-4 ml-4">
-                                <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px]">{t("password")}</Text>
+                                <View className="flex-row items-center">
+                                    <View className="w-1.5 h-1.5 rounded-full bg-[#00BCD4] mr-2" />
+                                    <Text className="text-[#757575] text-[10px] font-black uppercase tracking-[2px]">{t("password")}</Text>
+                                </View>
                                 <TouchableOpacity>
-                                    <Text className="text-[#00BDD6] text-[10px] font-black uppercase tracking-[1px]">{t("forgot")}</Text>
+                                    <Text className="text-[#0288D1] text-[10px] font-black uppercase tracking-[1px]">{t("forgot")}</Text>
                                 </TouchableOpacity>
                             </View>
                             <View className="relative">
                                 <TextInput
-                                    className="bg-white p-5 pl-16 rounded-[28px] shadow-sm border border-slate-50 text-lg"
+                                    className="bg-[#F5F5F5] p-5 pl-16 rounded-[28px] border border-[#E0E0E0] text-base text-[#212121]"
                                     placeholder="••••••••"
+                                    placeholderTextColor="#E0E0E0"
                                     secureTextEntry
                                     value={password}
                                     onChangeText={setPassword}
                                 />
                                 <View className="absolute left-6 top-6">
-                                    <Lock size={20} color="#7FD7E0" strokeWidth={2.5} />
+                                    <Lock size={20} color="#00BCD4" strokeWidth={2.5} />
                                 </View>
                             </View>
                         </View>
 
                         <TouchableOpacity
-                            className="bg-[#00BDD6] py-4 rounded-[28px] shadow-xl flex-row items-center justify-center mb-10"
+                            className="bg-[#0288D1] py-5 rounded-[32px] shadow-xl shadow-[#0288D1]/30 flex-row items-center justify-center mb-10"
                             onPress={handleLogin}
                         >
-                            <Text className="text-white font-black text-xl mr-3">{t("sign_in")}</Text>
+                            <Text className="text-white font-black text-xl mr-3 tracking-tight">{t("sign_in")}</Text>
+                            <ArrowRight size={20} color="white" strokeWidth={3} />
                         </TouchableOpacity>
                     </View>
 
                     {/* Footer */}
                     <View className="flex-row justify-center items-center">
-                        <Text className="text-[#94A3B8] font-medium mr-2">{t("new_user")}</Text>
+                        <Text className="text-[#757575] font-bold mr-2 tracking-tight">{t("new_user")}</Text>
                         <TouchableOpacity onPress={() => router.push('/(auth)/signup')}>
-                            <Text className="text-[#00BDD6] font-black">{t("create_account")}</Text>
+                            <Text className="text-[#0288D1] font-black tracking-tighter">{t("create_account")}</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>

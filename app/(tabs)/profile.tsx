@@ -38,7 +38,7 @@ const SettingItem = ({ icon: Icon, label, color, onPress, showBorder = true, rig
                 justifyContent: 'space-between',
                 paddingVertical: 18,
                 borderBottomWidth: showBorder ? 1 : 0,
-                borderBottomColor: isDark ? '#1E293B' : '#F8FAFC'
+                borderBottomColor: isDark ? '#1E293B' : '#F5F5F5'
             }}
         >
             <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
@@ -48,14 +48,14 @@ const SettingItem = ({ icon: Icon, label, color, onPress, showBorder = true, rig
                     alignItems: 'center',
                     justifyContent: 'center',
                     borderRadius: 14,
-                    backgroundColor: isDark ? '#1E293B' : '#F1F5F9',
+                    backgroundColor: isDark ? '#1E293B' : '#F5F5F5',
                     marginRight: 16
                 }}>
-                    <Icon size={18} color={color || "#64748B"} strokeWidth={2.2} />
+                    <Icon size={18} color={color || "#757575"} strokeWidth={2.2} />
                 </View>
                 <View style={{ flex: 1 }}>
                     <Text style={{
-                        color: isDark ? '#E2E8F0' : '#475569',
+                        color: isDark ? '#F8FAFC' : '#212121',
                         fontSize: 15,
                         fontWeight: '600',
                         letterSpacing: -0.3
@@ -64,7 +64,7 @@ const SettingItem = ({ icon: Icon, label, color, onPress, showBorder = true, rig
                     </Text>
                     {value ? (
                         <Text style={{
-                            color: '#94A3B8',
+                            color: '#757575',
                             fontSize: 12,
                             fontWeight: '500',
                             marginTop: 1
@@ -76,7 +76,7 @@ const SettingItem = ({ icon: Icon, label, color, onPress, showBorder = true, rig
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 {rightElement ? rightElement : (
-                    <ChevronRight size={18} color={isDark ? "#334155" : "#CBD5E1"} strokeWidth={2.5} />
+                    <ChevronRight size={18} color={isDark ? "#334155" : "#E0E0E0"} strokeWidth={2.5} />
                 )}
             </View>
         </TouchableOpacity>
@@ -139,8 +139,8 @@ export default function ProfileScreen() {
     const isDark = colorScheme === 'dark';
 
     return (
-        <SafeAreaView className="flex-1 bg-white dark:bg-[#020617]" edges={['top']}>
-            <View className="px-6 py-4 flex-row justify-between items-center bg-white dark:bg-[#020617]">
+        <SafeAreaView className="flex-1 bg-white dark:bg-[#0F172A]" edges={['top']}>
+            <View className="px-6 py-4 flex-row justify-between items-center bg-white dark:bg-[#0F172A]">
                 <TouchableOpacity
                     onPress={() => router.push('/(tabs)')}
                     style={{
@@ -149,15 +149,15 @@ export default function ProfileScreen() {
                         alignItems: 'center',
                         justifyContent: 'center',
                         borderRadius: 15,
-                        backgroundColor: isDark ? '#0F172A' : '#F8FAFC',
+                        backgroundColor: isDark ? '#1E293B' : '#F5F5F5',
                         borderWidth: 1,
-                        borderColor: isDark ? '#1E293B' : '#F1F5F9'
+                        borderColor: isDark ? '#334155' : '#E0E0E0'
                     }}
                 >
-                    <ChevronLeft size={22} color={isDark ? "#94A3B8" : "#475569"} strokeWidth={2.5} />
+                    <ChevronLeft size={22} color={isDark ? "#F8FAFC" : "#212121"} strokeWidth={2.5} />
                 </TouchableOpacity>
                 <Text style={{
-                    color: isDark ? '#F8FAFC' : '#0F172A',
+                    color: isDark ? '#F8FAFC' : '#212121',
                     fontSize: 20,
                     fontWeight: '900',
                     letterSpacing: -0.5
@@ -175,11 +175,11 @@ export default function ProfileScreen() {
                 <View className="py-6">
                     <View
                         style={{
-                            backgroundColor: isDark ? '#0F172A' : '#FFFFFF',
+                            backgroundColor: isDark ? '#1E293B' : '#FFFFFF',
                             padding: 24,
                             borderRadius: 32,
                             borderWidth: 1,
-                            borderColor: isDark ? '#1E293B' : '#F1F5F9',
+                            borderColor: isDark ? '#334155' : '#F5F5F5',
                             shadowColor: '#000',
                             shadowOffset: { width: 0, height: 10 },
                             shadowOpacity: isDark ? 0 : 0.05,
@@ -193,18 +193,18 @@ export default function ProfileScreen() {
                             width: 72,
                             height: 72,
                             borderRadius: 26,
-                            backgroundColor: isDark ? '#1E293B' : '#F0FDFF',
+                            backgroundColor: isDark ? '#0F172A' : '#E0F2FE',
                             alignItems: 'center',
                             justifyContent: 'center',
                             marginRight: 20,
                             borderWidth: 1,
-                            borderColor: isDark ? '#334155' : '#CFFAFE'
+                            borderColor: isDark ? '#334155' : '#4FC3F7'
                         }}>
-                            <User size={34} color="#00BDD6" strokeWidth={2.5} />
+                            <User size={34} color="#0288D1" strokeWidth={2.5} />
                         </View>
                         <View style={{ flex: 1 }}>
                             <Text style={{
-                                color: isDark ? '#F8FAFC' : '#0F172A',
+                                color: isDark ? '#F8FAFC' : '#212121',
                                 fontSize: 22,
                                 fontWeight: '900',
                                 letterSpacing: -0.5
@@ -212,7 +212,7 @@ export default function ProfileScreen() {
                                 {userProfile?.name || 'Hydrator'}
                             </Text>
                             <View style={{
-                                backgroundColor: isDark ? '#1E293B' : '#E0F2FE',
+                                backgroundColor: isDark ? '#0F172A' : '#4FC3F733',
                                 paddingHorizontal: 10,
                                 paddingVertical: 4,
                                 borderRadius: 10,
@@ -221,9 +221,9 @@ export default function ProfileScreen() {
                                 flexDirection: 'row',
                                 alignItems: 'center'
                             }}>
-                                <Droplets size={12} color="#00BDD6" strokeWidth={3} style={{ marginRight: 4 }} />
+                                <Droplets size={12} color="#00BCD4" strokeWidth={3} style={{ marginRight: 4 }} />
                                 <Text style={{
-                                    color: '#00BDD6',
+                                    color: '#0288D1',
                                     fontSize: 11,
                                     fontWeight: '800',
                                     textTransform: 'uppercase',
@@ -237,17 +237,17 @@ export default function ProfileScreen() {
                             onPress={() => Alert.alert("Notifications", "All hydration alerts are active! 🔔")}
                             activeOpacity={0.7}
                             style={{
-                                backgroundColor: isDark ? '#1E293B' : '#F8FAFC',
+                                backgroundColor: isDark ? '#0F172A' : '#F5F5F5',
                                 width: 48,
                                 height: 48,
                                 borderRadius: 18,
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 borderWidth: 1,
-                                borderColor: isDark ? '#334155' : '#F1F5F9'
+                                borderColor: isDark ? '#334155' : '#E0E0E0'
                             }}
                         >
-                            <Bell size={20} color="#00BDD6" strokeWidth={2.5} />
+                            <Bell size={20} color="#00BCD4" strokeWidth={2.5} />
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -255,32 +255,32 @@ export default function ProfileScreen() {
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 32 }}>
                     <View style={{
                         flex: 1,
-                        backgroundColor: isDark ? '#0F172A' : '#F8FAFC',
+                        backgroundColor: isDark ? '#1E293B' : '#F5F5F5',
                         padding: 16,
                         borderRadius: 24,
                         marginRight: 12,
                         borderWidth: 1,
-                        borderColor: isDark ? '#1E293B' : '#F1F5F9'
+                        borderColor: isDark ? '#334155' : '#E0E0E0'
                     }}>
-                        <Text style={{ color: '#94A3B8', fontSize: 10, fontWeight: '800', textTransform: 'uppercase', letterSpacing: 1 }}>{t("weight")}</Text>
-                        <Text style={{ color: isDark ? '#F8FAFC' : '#0F172A', fontSize: 18, fontWeight: '900', marginTop: 4 }}>{userProfile?.weight || '--'} <Text style={{ fontSize: 13, color: '#94A3B8' }}>{t("kg")}</Text></Text>
+                        <Text style={{ color: '#757575', fontSize: 10, fontWeight: '800', textTransform: 'uppercase', letterSpacing: 1 }}>{t("weight")}</Text>
+                        <Text style={{ color: isDark ? '#F8FAFC' : '#212121', fontSize: 18, fontWeight: '900', marginTop: 4 }}>{userProfile?.weight || '--'} <Text style={{ fontSize: 13, color: '#757575' }}>{t("kg")}</Text></Text>
                     </View>
                     <View style={{
                         flex: 1,
-                        backgroundColor: isDark ? '#0F172A' : '#F8FAFC',
+                        backgroundColor: isDark ? '#1E293B' : '#F5F5F5',
                         padding: 16,
                         borderRadius: 24,
                         borderWidth: 1,
-                        borderColor: isDark ? '#1E293B' : '#F1F5F9'
+                        borderColor: isDark ? '#334155' : '#E0E0E0'
                     }}>
-                        <Text style={{ color: '#94A3B8', fontSize: 10, fontWeight: '800', textTransform: 'uppercase', letterSpacing: 1 }}>{t("height")}</Text>
-                        <Text style={{ color: isDark ? '#F8FAFC' : '#0F172A', fontSize: 18, fontWeight: '900', marginTop: 4 }}>{userProfile?.height || '--'} <Text style={{ fontSize: 13, color: '#94A3B8' }}>{t("cm")}</Text></Text>
+                        <Text style={{ color: '#757575', fontSize: 10, fontWeight: '800', textTransform: 'uppercase', letterSpacing: 1 }}>{t("height")}</Text>
+                        <Text style={{ color: isDark ? '#F8FAFC' : '#212121', fontSize: 18, fontWeight: '900', marginTop: 4 }}>{userProfile?.height || '--'} <Text style={{ fontSize: 13, color: '#757575' }}>{t("cm")}</Text></Text>
                     </View>
                 </View>
 
                 <View className="mb-10">
                     <Text style={{
-                        color: '#94A3B8',
+                        color: '#757575',
                         fontSize: 11,
                         fontWeight: '800',
                         textTransform: 'uppercase',
@@ -292,11 +292,11 @@ export default function ProfileScreen() {
                     </Text>
                     <View style={{
                         flexDirection: 'row',
-                        backgroundColor: isDark ? '#0F172A' : '#F8FAFC',
+                        backgroundColor: isDark ? '#1E293B' : '#F5F5F5',
                         padding: 6,
                         borderRadius: 24,
                         borderWidth: 1,
-                        borderColor: isDark ? '#1E293B' : '#F1F5F9'
+                        borderColor: isDark ? '#334155' : '#E0E0E0'
                     }}>
                         <TouchableOpacity
                             onPress={() => handleToggleTheme('light')}
@@ -315,14 +315,14 @@ export default function ProfileScreen() {
                                 elevation: !isDark ? 3 : 0
                             }}
                         >
-                            <Sun size={18} color={!isDark ? "#F59E0B" : "#64748B"} strokeWidth={!isDark ? 3 : 2} />
+                            <Sun size={18} color={!isDark ? "#FFA726" : "#757575"} strokeWidth={!isDark ? 3 : 2} />
                             <Text style={{
                                 fontWeight: '800',
                                 textTransform: 'uppercase',
                                 fontSize: 10,
                                 letterSpacing: 1.5,
                                 marginLeft: 8,
-                                color: !isDark ? '#0F172A' : '#64748B'
+                                color: !isDark ? '#212121' : '#757575'
                             }}>{t("light")}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
@@ -334,22 +334,22 @@ export default function ProfileScreen() {
                                 justifyContent: 'center',
                                 paddingVertical: 14,
                                 borderRadius: 18,
-                                backgroundColor: isDark ? '#4F46E5' : 'transparent',
-                                shadowColor: '#4F46E5',
+                                backgroundColor: isDark ? '#0288D1' : 'transparent',
+                                shadowColor: '#0288D1',
                                 shadowOffset: { width: 0, height: 6 },
                                 shadowOpacity: isDark ? 0.4 : 0,
                                 shadowRadius: 12,
                                 elevation: isDark ? 8 : 0
                             }}
                         >
-                            <Moon size={18} color={isDark ? "white" : "#64748B"} strokeWidth={isDark ? 3 : 2} />
+                            <Moon size={18} color={isDark ? "white" : "#757575"} strokeWidth={isDark ? 3 : 2} />
                             <Text style={{
                                 fontWeight: '800',
                                 textTransform: 'uppercase',
                                 fontSize: 10,
                                 letterSpacing: 1.5,
                                 marginLeft: 8,
-                                color: isDark ? 'white' : '#64748B'
+                                color: isDark ? 'white' : '#757575'
                             }}>{t("dark")}</Text>
                         </TouchableOpacity>
                     </View>
@@ -357,7 +357,7 @@ export default function ProfileScreen() {
 
                 <View className="mb-10">
                     <Text style={{
-                        color: '#94A3B8',
+                        color: '#757575',
                         fontSize: 11,
                         fontWeight: '800',
                         textTransform: 'uppercase',
@@ -368,11 +368,11 @@ export default function ProfileScreen() {
                         {t("settings")}
                     </Text>
                     <View style={{
-                        backgroundColor: isDark ? '#0F172A' : '#FFFFFF',
+                        backgroundColor: isDark ? '#1E293B' : '#FFFFFF',
                         paddingHorizontal: 20,
                         borderRadius: 28,
                         borderWidth: 1,
-                        borderColor: isDark ? '#1E293B' : '#F1F5F9',
+                        borderColor: isDark ? '#334155' : '#F5F5F5',
                         shadowColor: '#000',
                         shadowOffset: { width: 0, height: 4 },
                         shadowOpacity: isDark ? 0 : 0.02,
@@ -383,31 +383,31 @@ export default function ProfileScreen() {
                             icon={Languages}
                             label={t("language")}
                             value={i18n.language === 'en' ? 'English' : 'বাংলা'}
-                            color="#818CF8"
+                            color="#0288D1"
                             onPress={toggleLanguage}
                         />
                         <SettingItem
                             icon={Lock}
                             label={t("change_password")}
-                            color="#FCA5A5"
+                            color="#F44336"
                             onPress={() => router.push('/settings/password')}
                         />
                         <SettingItem
                             icon={Users}
                             label={t("invite")}
-                            color="#34D399"
+                            color="#66BB6A"
                             onPress={() => router.push('/settings/invite')}
                         />
                         <SettingItem
                             icon={HelpCircle}
                             label={t("faq")}
-                            color="#F472B6"
+                            color="#00BCD4"
                             onPress={() => router.push('/settings/faq')}
                         />
                         <SettingItem
                             icon={Info}
                             label={t("about")}
-                            color="#94A3B8"
+                            color="#757575"
                             showBorder={false}
                             onPress={() => router.push('/settings/about')}
                         />
@@ -418,7 +418,7 @@ export default function ProfileScreen() {
                     onPress={handleSignOut}
                     activeOpacity={0.8}
                     style={{
-                        backgroundColor: isDark ? '#0F172A' : '#F8FAFC',
+                        backgroundColor: isDark ? '#1E293B' : '#F5F5F5',
                         paddingVertical: 18,
                         flexDirection: 'row',
                         borderRadius: 24,
@@ -426,14 +426,13 @@ export default function ProfileScreen() {
                         justifyContent: 'center',
                         marginBottom: 40,
                         borderWidth: 1,
-                        borderColor: isDark ? '#EF444433' : '#FEE2E2',
+                        borderColor: isDark ? '#F4433644' : '#F4433622',
                     }}
                 >
-                    <LogOut size={20} color="#EF4444" strokeWidth={2.5} />
-                    <Text style={{ color: '#EF4444', fontWeight: '800', fontSize: 16, marginLeft: 12 }}>{t("sign_out")}</Text>
+                    <LogOut size={20} color="#F44336" strokeWidth={2.5} />
+                    <Text style={{ color: '#F44336', fontWeight: '800', fontSize: 16, marginLeft: 12 }}>{t("sign_out")}</Text>
                 </TouchableOpacity>
             </ScrollView>
         </SafeAreaView>
     );
 }
-

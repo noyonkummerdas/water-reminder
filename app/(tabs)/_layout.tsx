@@ -37,8 +37,8 @@ export default function TabLayout() {
         <Tabs
             screenOptions={{
                 headerShown: false,
-                tabBarActiveTintColor: '#00BDD6',
-                tabBarInactiveTintColor: '#CBD5E1',
+                tabBarActiveTintColor: '#0288D1',
+                tabBarInactiveTintColor: '#757575',
                 tabBarStyle: {
                     position: 'absolute',
                     backgroundColor: 'transparent',
@@ -59,7 +59,7 @@ export default function TabLayout() {
                     title: t('home'),
                     tabBarIcon: ({ color, focused }) => (
                         <View className="items-center">
-                            {focused && <View className="w-1.5 h-1.5 rounded-full bg-[#00BDD6] mb-1" />}
+                            {focused && <View className="w-1.5 h-1.5 rounded-full bg-[#0288D1] mb-1" />}
                             <LayoutGrid size={24} color={color} strokeWidth={2.5} />
                         </View>
                     ),
@@ -71,7 +71,7 @@ export default function TabLayout() {
                     title: t('statistics'),
                     tabBarIcon: ({ color, focused }) => (
                         <View className="items-center">
-                            {focused && <View className="w-1.5 h-1.5 rounded-full bg-[#00BDD6] mb-1" />}
+                            {focused && <View className="w-1.5 h-1.5 rounded-full bg-[#0288D1] mb-1" />}
                             <BarChart3 size={24} color={color} strokeWidth={2.5} />
                         </View>
                     ),
@@ -83,14 +83,14 @@ export default function TabLayout() {
                     title: '',
                     tabBarIcon: () => (
                         <View style={{
-                            backgroundColor: '#00BDD6',
+                            backgroundColor: '#0288D1',
                             width: 64,
                             height: 64,
                             borderRadius: 32,
                             alignItems: 'center',
                             justifyContent: 'center',
                             marginBottom: 50,
-                            shadowColor: '#00BDD6',
+                            shadowColor: '#0288D1',
                             shadowOffset: { width: 0, height: 10 },
                             shadowOpacity: 0.45,
                             shadowRadius: 15,
@@ -109,7 +109,7 @@ export default function TabLayout() {
                     title: t('history'),
                     tabBarIcon: ({ color, focused }) => (
                         <View className="items-center">
-                            {focused && <View className="w-1.5 h-1.5 rounded-full bg-[#00BDD6] mb-1" />}
+                            {focused && <View className="w-1.5 h-1.5 rounded-full bg-[#0288D1] mb-1" />}
                             <GlassWater size={24} color={color} strokeWidth={2.5} />
                         </View>
                     ),
@@ -121,7 +121,7 @@ export default function TabLayout() {
                     title: t('my_profile'),
                     tabBarIcon: ({ color, focused }) => (
                         <View className="items-center">
-                            {focused && <View className="w-1.5 h-1.5 rounded-full bg-[#00BDD6] mb-1" />}
+                            {focused && <View className="w-1.5 h-1.5 rounded-full bg-[#0288D1] mb-1" />}
                             <User size={24} color={color} strokeWidth={3} />
                         </View>
                     ),

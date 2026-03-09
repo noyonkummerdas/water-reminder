@@ -21,5 +21,5 @@ export default function Index() {
         return () => clearTimeout(timer);
     }, [rootNavigationState?.key, isLoggedIn]);
 
-    return <View style={{ flex: 1, backgroundColor: '#F8FAFB' }} />;
+    return <View style={{ flex: 1, backgroundColor: '#FFFFFF' }} />;
 }

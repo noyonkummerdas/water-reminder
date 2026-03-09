@@ -19,13 +19,13 @@ const ThemeToggle = () => {
         <TouchableOpacity
             onPress={toggleTheme}
             activeOpacity={0.8}
-            className="w-11 h-11 items-center justify-center rounded-2xl bg-white dark:bg-dark-surface shadow-sm border border-slate-50 dark:border-slate-800"
+            className="w-11 h-11 items-center justify-center rounded-2xl bg-[#F5F5F5] dark:bg-[#1E293B] border border-[#E0E0E0] dark:border-[#334155]"
         >
             <View className="items-center justify-center">
                 {isDark ? (
-                    <Sun size={22} color="#FBBF24" strokeWidth={2.5} />
+                    <Sun size={22} color="#FFA726" strokeWidth={2.5} />
                 ) : (
-                    <Moon size={22} color="#6366F1" strokeWidth={2.5} />
+                    <Moon size={22} color="#0288D1" strokeWidth={2.5} />
                 )}
             </View>
         </TouchableOpacity>

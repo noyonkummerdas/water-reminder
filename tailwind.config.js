@@ -11,37 +11,35 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-          DEFAULT: "#00BDD6",
-          light: "#E6F4FE",
-          dark: "#0891B2",
+          DEFAULT: "#0288D1", // Deep Blue - Main theme
+          deep: "#0288D1",
+          cyan: "#00BCD4", // Cyan / Aqua
+          light: "#4FC3F7", // Light Blue
         },
-        accent: {
-          DEFAULT: "#FF6E71",
-          gold: "#F59E0B",
-          indigo: "#6366F1",
-          emerald: "#10B981",
+        success: {
+          DEFAULT: "#66BB6A",
+          light: "#A5D6A7",
         },
-        background: "#F1F5F9", // Slate-100 as the new light gray base
-        surface: "#FFFFFF",
+        warning: {
+          DEFAULT: "#FFA726", // Orange
+        },
+        error: {
+          DEFAULT: "#F44336", // Red
+        },
+        background: "#FFFFFF",
+        surface: "#F5F5F5", // Light Gray Card Background
+        "surface-dark": "#E0E0E0",
+        text: {
+          DEFAULT: "#212121", // Dark Gray Main
+          medium: "#757575", // Medium Gray
+          white: "#FFFFFF",
+        },
         dark: {
-          background: "#020617", // Slate-950
-          surface: "#0F172A",    // Slate-900
-          text: "#F8FAFC",       // Slate-50
-          accent: "#00BDD6",
+          background: "#0F172A",
+          surface: "#1E293B",
+          text: "#F8FAFC",
+          accent: "#00BCD4",
         },
-        slate: {
-          50: "#F8FAFC",
-          100: "#F1F5F9",
-          200: "#E2E8F0",
-          300: "#CBD5E1",
-          400: "#94A3B8",
-          500: "#64748B",
-          600: "#475569",
-          700: "#334155",
-          800: "#1E293B",
-          900: "#0F172A",
-          950: "#020617",
-        }
       },
       borderRadius: {
         '4xl': '32px',
@@ -50,7 +48,8 @@ module.exports = {
       },
       boxShadow: {
         'premium': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-        'aqua': '0 20px 25px -5px rgba(0, 189, 214, 0.2), 0 10px 10px -5px rgba(0, 189, 214, 0.1)',
+        'aqua': '0 20px 25px -5px rgba(0, 188, 212, 0.3), 0 10px 10px -5px rgba(0, 188, 212, 0.2)',
+        'deep': '0 20px 25px -5px rgba(2, 136, 209, 0.3), 0 10px 10px -5px rgba(2, 136, 209, 0.2)',
       }
     },
   },

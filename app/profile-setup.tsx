@@ -68,21 +68,21 @@ export default function ProfileSetupScreen() {
 
         return (
             <View className="items-center py-4">
-                <Text className="text-[#1E293B] font-black text-2xl mb-3 text-center px-4">{t('height_ques')}</Text>
-                <Text className="text-[#94A3B8] text-xs text-center px-10 leading-5 mb-8 italic">{t('height_desc')}</Text>
+                <Text className="text-[#212121] font-black text-2xl mb-3 text-center px-4">{t('height_ques')}</Text>
+                <Text className="text-[#757575] text-xs text-center px-10 leading-5 mb-8 italic">{t('height_desc')}</Text>
 
-                <View className="flex-row bg-slate-100 p-1.5 rounded-[24px] mb-12 w-56 shadow-sm">
+                <View className="flex-row bg-[#F5F5F5] p-1.5 rounded-[24px] mb-12 w-56 border border-[#E0E0E0]">
                     <TouchableOpacity
                         onPress={() => setHeightUnit('ft')}
                         className={`flex-1 py-3 rounded-[20px] items-center ${heightUnit === 'ft' ? 'bg-white shadow-sm' : ''}`}
                     >
-                        <Text className={`font-black text-[10px] uppercase tracking-widest ${heightUnit === 'ft' ? 'text-[#00BDD6]' : 'text-[#94A3B8]'}`}>{t('feet')}</Text>
+                        <Text className={`font-black text-[10px] uppercase tracking-widest ${heightUnit === 'ft' ? 'text-[#0288D1]' : 'text-[#757575]'}`}>{t('feet')}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         onPress={() => setHeightUnit('cm')}
                         className={`flex-1 py-3 rounded-[20px] items-center ${heightUnit === 'cm' ? 'bg-white shadow-sm' : ''}`}
                     >
-                        <Text className={`font-black text-[10px] uppercase tracking-widest ${heightUnit === 'cm' ? 'text-[#00BDD6]' : 'text-[#94A3B8]'}`}>{t('cm')}</Text>
+                        <Text className={`font-black text-[10px] uppercase tracking-widest ${heightUnit === 'cm' ? 'text-[#0288D1]' : 'text-[#757575]'}`}>{t('cm')}</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -91,53 +91,53 @@ export default function ProfileSetupScreen() {
                     {heightUnit === 'ft' ? (
                         <View className="flex-row justify-center space-x-6 items-center">
                             <View className="items-center">
-                                <View className="bg-white px-6 py-4 rounded-[36px] shadow-sm border border-slate-50 items-center justify-center min-w-[100px]">
+                                <View className="bg-white px-6 py-4 rounded-[36px] shadow-sm border border-[#F5F5F5] items-center justify-center min-w-[100px]">
                                     <TextInput
-                                        className="text-[#1E293B] font-black text-6xl text-center"
+                                        className="text-[#212121] font-black text-6xl text-center"
                                         keyboardType="numeric"
                                         placeholder="0"
-                                        placeholderTextColor="#E2E8F0"
+                                        placeholderTextColor="#E0E0E0"
                                         value={feet}
                                         onChangeText={setFeet}
                                         maxLength={1}
                                     />
                                 </View>
-                                <Text className="mt-4 text-[#00BDD6] font-black uppercase text-[10px] tracking-widest">{t('feet')}</Text>
+                                <Text className="mt-4 text-[#00BCD4] font-black uppercase text-[10px] tracking-widest">{t('feet')}</Text>
                             </View>
-                            <Text className="text-slate-200 font-black text-4xl mb-8">'</Text>
+                            <Text className="text-[#E0E0E0] font-black text-4xl mb-8">'</Text>
                             <View className="items-center">
-                                <View className="bg-white px-8 py-6 rounded-[36px] shadow-sm border border-slate-50 items-center justify-center min-w-[100px]">
+                                <View className="bg-white px-8 py-6 rounded-[36px] shadow-sm border border-[#F5F5F5] items-center justify-center min-w-[100px]">
                                     <TextInput
-                                        className="text-[#1E293B] font-black text-6xl text-center"
+                                        className="text-[#212121] font-black text-6xl text-center"
                                         keyboardType="numeric"
                                         placeholder="0"
-                                        placeholderTextColor="#E2E8F0"
+                                        placeholderTextColor="#E0E0E0"
                                         value={inches}
                                         onChangeText={setInches}
                                         maxLength={2}
                                     />
                                 </View>
-                                <Text className="mt-4 text-[#00BDD6] font-black uppercase text-[10px] tracking-widest">{t('inches')}</Text>
+                                <Text className="mt-4 text-[#00BCD4] font-black uppercase text-[10px] tracking-widest">{t('inches')}</Text>
                             </View>
                         </View>
                     ) : (
-                        <View className="bg-white px-10 py-6 rounded-[36px] shadow-sm border border-slate-50 flex-row items-baseline justify-center min-w-[180px]">
+                        <View className="bg-white px-10 py-6 rounded-[36px] shadow-sm border border-[#F5F5F5] flex-row items-baseline justify-center min-w-[180px]">
                             <TextInput
-                                className="text-[#1E293B] font-black text-6xl text-center mr-2"
+                                className="text-[#212121] font-black text-6xl text-center mr-2"
                                 keyboardType="numeric"
                                 placeholder="0"
-                                placeholderTextColor="#E2E8F0"
+                                placeholderTextColor="#E0E0E0"
                                 value={hValue}
                                 onChangeText={onHeightChange}
                                 maxLength={3}
                             />
-                            <Text className="text-[#00BDD6] font-bold text-2xl">{t('cm')}</Text>
+                            <Text className="text-[#0288D1] font-bold text-2xl">{t('cm')}</Text>
                         </View>
                     )}
                 </View>
 
                 <View className="px-10">
-                    <Text className="text-[#94A3B8] text-center text-[10px] font-bold uppercase leading-5 italic bg-slate-50 py-4 rounded-3xl border border-slate-100 px-6">
+                    <Text className="text-[#757575] text-center text-[10px] font-bold uppercase leading-5 italic bg-[#F5F5F5] py-4 rounded-3xl border border-[#E0E0E0] px-6">
                         {estimatedHeight > 0 ? displayEstimated : t('enter_height')}
                     </Text>
                 </View>
@@ -192,7 +192,7 @@ export default function ProfileSetupScreen() {
     };
 
     return (
-        <View className="flex-1 bg-[#F8FAFB]">
+        <View className="flex-1 bg-white">
             <SafeAreaView className="flex-1" edges={['top']}>
                 <View className="px-6 py-4 flex-row justify-between items-center">
                     <TouchableOpacity
@@ -205,15 +205,15 @@ export default function ProfileSetupScreen() {
                                 router.replace('/(auth)/login');
                             }
                         }}
-                        className="w-11 h-11 items-center justify-center rounded-2xl bg-white shadow-sm border border-slate-50"
+                        className="w-11 h-11 items-center justify-center rounded-2xl bg-[#F5F5F5] border border-[#E0E0E0]"
                     >
-                        <ChevronLeft size={22} color="#1E293B" />
+                        <ChevronLeft size={22} color="#212121" />
                     </TouchableOpacity>
                     <View className="flex-row px-2">
                         {[1, 2, 3].map((s) => (
                             <View
                                 key={s}
-                                className={`w-2 h-2 rounded-full mx-1.5 ${s === step ? 'bg-[#00BDD6]' : 'bg-[#E2E8F0]'}`}
+                                className={`w-2.5 h-1 rounded-full mx-1 ${s === step ? 'bg-[#0288D1] w-6' : 'bg-[#E0E0E0]'}`}
                             />
                         ))}
                     </View>
@@ -227,50 +227,55 @@ export default function ProfileSetupScreen() {
                     <ScrollView className="flex-1 px-6 pt-4" showsVerticalScrollIndicator={false}>
                         {step === 1 && (
                             <View>
-                                <Text className="text-[#1E293B] font-black text-3xl mb-3 leading-[50px]">{t('welcome')}</Text>
-                                <Text className="text-[#94A3B8] text-lg font-medium mb-12">{t('welcome_sub')}</Text>
+                                <Text className="text-[#212121] font-black text-4xl mb-3 leading-[50px] tracking-tight">{t('welcome')}</Text>
+                                <Text className="text-[#757575] text-lg font-medium mb-12">{t('welcome_sub')}</Text>
 
                                 <View className="mb-8">
-                                    <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px] mb-4 ml-4">{t('your_name')}</Text>
+                                    <View className="flex-row items-center mb-4 ml-4">
+                                        <View className="w-1.5 h-1.5 rounded-full bg-[#00BCD4] mr-2" />
+                                        <Text className="text-[#757575] text-[10px] font-black uppercase tracking-[2px]">{t('your_name')}</Text>
+                                    </View>
                                     <TextInput
-                                        className="bg-white p-4 rounded-[32px] shadow-sm border border-slate-50 text-lg"
+                                        className="bg-[#F5F5F5] p-5 rounded-[28px] border border-[#E0E0E0] text-lg font-bold text-[#212121]"
                                         placeholder="Cody Fisher"
+                                        placeholderTextColor="#757575"
                                         value={profile.name}
                                         onChangeText={(text) => setProfile({ ...profile, name: text })}
                                     />
                                 </View>
 
                                 <View className="mb-8">
-                                    <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px] mb-6 ml-4">{t('gender')}</Text>
+                                    <View className="flex-row items-center mb-6 ml-4">
+                                        <View className="w-1.5 h-1.5 rounded-full bg-[#00BCD4] mr-2" />
+                                        <Text className="text-[#757575] text-[10px] font-black uppercase tracking-[2px]">{t('gender')}</Text>
+                                    </View>
                                     <View className="flex-row justify-between">
                                         <TouchableOpacity
                                             onPress={() => setProfile({ ...profile, gender: 'male' })}
-                                            className={`w-[48%] py-4 rounded-[36px] flex-row items-center justify-center border ${profile.gender === 'male' ? 'bg-[#00BDD6] border-[#00BDD6]' : 'bg-white border-slate-50'}`}
+                                            className={`w-[48%] py-5 rounded-[32px] flex-row items-center justify-center border ${profile.gender === 'male' ? 'bg-[#0288D1] border-[#0288D1]' : 'bg-[#F5F5F5] border-[#E0E0E0]'}`}
                                         >
                                             <MaterialCommunityIcons
                                                 name="human-male"
-                                                size={28}
-                                                color={profile.gender === 'male' ? 'white' : '#7FD7E0'}
+                                                size={24}
+                                                color={profile.gender === 'male' ? 'white' : '#00BCD4'}
                                                 style={{ marginRight: 8 }}
                                             />
-                                            <Text className={`font-black text-base ${profile.gender === 'male' ? 'text-white' : '#7FD7E0'}`}>{t('male')}</Text>
+                                            <Text className={`font-black text-sm uppercase tracking-wider ${profile.gender === 'male' ? 'text-white' : '#00BCD4'}`}>{t('male')}</Text>
                                         </TouchableOpacity>
                                         <TouchableOpacity
                                             onPress={() => setProfile({ ...profile, gender: 'female' })}
-                                            className={`w-[48%] py-4 rounded-[36px] flex-row items-center justify-center border ${profile.gender === 'female' ? 'bg-[#00BDD6] border-[#00BDD6]' : 'bg-white border-slate-50'}`}
+                                            className={`w-[48%] py-5 rounded-[32px] flex-row items-center justify-center border ${profile.gender === 'female' ? 'bg-[#0288D1] border-[#0288D1]' : 'bg-[#F5F5F5] border-[#E0E0E0]'}`}
                                         >
                                             <MaterialCommunityIcons
                                                 name="human-female"
-                                                size={28}
-                                                color={profile.gender === 'female' ? 'white' : '#7FD7E0'}
+                                                size={24}
+                                                color={profile.gender === 'female' ? 'white' : '#00BCD4'}
                                                 style={{ marginRight: 8 }}
                                             />
-                                            <Text className={`font-black text-base ${profile.gender === 'female' ? 'text-white' : '#7FD7E0'}`}>{t('female')}</Text>
+                                            <Text className={`font-black text-sm uppercase tracking-wider ${profile.gender === 'female' ? 'text-white' : '#00BCD4'}`}>{t('female')}</Text>
                                         </TouchableOpacity>
                                     </View>
                                 </View>
-
-
 
                             </View>
                         )}
@@ -291,28 +296,29 @@ export default function ProfileSetupScreen() {
 
                         {step === 3 && (
                             <View className="items-center">
-                                <Text className="text-[#1E293B] font-black text-3xl mb-12 text-center px-6">{t('weight_ques')}</Text>
-                                <View className="w-full bg-white p-12 rounded-[50px] shadow-sm border border-slate-50 items-center">
-                                    <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px] mb-6">{t('weight')}</Text>
+                                <Text className="text-[#212121] font-black text-3xl mb-12 text-center px-6 tracking-tight">{t('weight_ques')}</Text>
+                                <View className="w-full bg-[#F5F5F5] p-12 rounded-[50px] border border-[#E0E0E0] items-center">
+                                    <Text className="text-[#757575] text-[10px] font-black uppercase tracking-[2px] mb-6">{t('weight')}</Text>
                                     <View className="flex-row items-baseline mb-8">
                                         <TextInput
-                                            className="text-[#1E293B] font-black text-8xl text-center min-w-[150px]"
+                                            className="text-[#212121] font-black text-8xl text-center min-w-[150px]"
                                             keyboardType="numeric"
                                             value={profile.weight}
                                             onChangeText={(text) => setProfile({ ...profile, weight: text })}
                                         />
-                                        <Text className="text-[#00BDD6] font-bold text-3xl ml-2">{t('kg')}</Text>
+                                        <Text className="text-[#0288D1] font-black text-3xl ml-3 tracking-tighter">{t('kg')}</Text>
                                     </View>
-                                    <Text className="text-[#94A3B8] text-center text-xs px-10 leading-5 italic">{t('weight_desc')}</Text>
+                                    <Text className="text-[#757575] text-center text-xs px-10 leading-5 italic font-medium">{t('weight_desc')}</Text>
                                 </View>
                             </View>
                         )}
 
                         <TouchableOpacity
-                            className="mt-14 bg-[#00BDD6] py-4 rounded-[32px] shadow-lg shadow-[#00BDD6]/40 flex-row items-center justify-center mb-20"
+                            className="mt-14 bg-[#0288D1] py-5 rounded-[32px] shadow-xl shadow-[#0288D1]/30 flex-row items-center justify-center mb-20"
                             onPress={handleNext}
                         >
-                            <Text className="text-white font-black text-xl mr-3">{t('next')}</Text>
+                            <Text className="text-white font-black text-xl mr-3 tracking-tight">{t('next')}</Text>
+                            <ArrowRight size={20} color="white" strokeWidth={3} />
                         </TouchableOpacity>
                     </ScrollView>
                 </KeyboardAvoidingView>

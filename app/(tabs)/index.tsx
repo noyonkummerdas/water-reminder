@@ -58,23 +58,21 @@ export default function HomeScreen() {
     if (isLoading && !userProfile) return null;
 
     return (
-        <SafeAreaView className="flex-1 bg-background dark:bg-dark-background" edges={['top']}>
+        <SafeAreaView className="flex-1 bg-white dark:bg-[#0F172A]" edges={['top']}>
             <View className="flex-1">
-                <View className="px-6 py-4 flex-row justify-between items-center">
+                <View className="px-6 py-4 flex-row justify-between items-center bg-white dark:bg-[#0F172A]">
                     <View className="flex-row items-center">
-                        <View className="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 mr-3 border-2 border-white dark:border-slate-700 shadow-sm overflow-hidden items-center justify-center">
-                            <View className="bg-primary/20 w-full h-full items-center justify-center">
-                                <User size={20} color="#00BDD6" />
-                            </View>
+                        <View className="w-12 h-12 rounded-2xl bg-[#F5F5F5] dark:bg-[#1E293B] mr-4 border border-[#E0E0E0] dark:border-[#334155] items-center justify-center">
+                            <User size={22} color="#0288D1" strokeWidth={2.5} />
                         </View>
                         <View>
-                            <Text className="text-[#1E293B] dark:text-white font-bold text-lg">{userName}</Text>
+                            <Text className="text-[#212121] dark:text-white font-black text-lg tracking-tight">{userName}</Text>
                             <View className="flex-row items-center">
-                                <Text className="text-[#94A3B8] dark:text-slate-400 text-[10px] uppercase font-bold tracking-widest">
-                                    {t("goal")}: {dailyGoal} {t("ml")}
+                                <Text className="text-[#757575] dark:text-[#94A3B8] text-[10px] uppercase font-black tracking-widest">
+                                    {t("goal")}: {dailyGoal} ML
                                 </Text>
-                                <Text className="mx-1.5 text-[#CBD5E1] dark:text-slate-600 text-[10px]">•</Text>
-                                <Text className="text-[#00BDD6] text-[10px] uppercase font-bold">
+                                <View className="w-1 h-1 rounded-full bg-[#00BCD4] mx-2" />
+                                <Text className="text-[#0288D1] text-[10px] uppercase font-black tracking-widest">
                                     {t(gender)}
                                 </Text>
                             </View>
@@ -82,8 +80,8 @@ export default function HomeScreen() {
                     </View>
                     <View className="flex-row items-center space-x-3">
                         <ThemeToggle />
-                        <TouchableOpacity className="w-11 h-11 items-center justify-center rounded-2xl bg-white dark:bg-dark-surface shadow-sm border border-slate-50 dark:border-slate-800">
-                            <BadgeCheck size={22} color={isGoalReached ? "#00BDD6" : (colorScheme === 'dark' ? "#334155" : "#CBD5E1")} strokeWidth={2.5} />
+                        <TouchableOpacity className="w-11 h-11 items-center justify-center rounded-2xl bg-[#F5F5F5] dark:bg-[#1E293B] border border-[#E0E0E0] dark:border-[#334155]">
+                            <BadgeCheck size={22} color={isGoalReached ? "#66BB6A" : "#757575"} strokeWidth={2.5} />
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -93,50 +91,61 @@ export default function HomeScreen() {
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ paddingBottom: 150 }}
                 >
-                    <View className="items-center mt-6 px-6">
-                        <View className="flex-row items-center">
-                            <Text className="text-[#00BDD6] font-black text-4xl">{consumption} {t("ml")}</Text>
-                            <Text className="text-[#1E293B] dark:text-white font-black text-3xl ml-3">{t("so_far")} 🎯</Text>
+                    <View className="items-center mt-8 px-6">
+                        <View className="flex-row items-baseline">
+                            <Text className="text-[#0288D1] font-black text-5xl">{consumption}</Text>
+                            <Text className="text-[#00BCD4] font-black text-2xl ml-1">{t("ml")}</Text>
+                            <Text className="text-[#212121] dark:text-white font-black text-3xl ml-3">{t("so_far")} 🎯</Text>
                         </View>
 
                         {isGoalReached ? (
-                            <View className="mt-4 flex-row items-center bg-[#DCFCE7] px-4 py-2 rounded-2xl">
-                                <CheckCircle2 size={16} color="#22C55E" strokeWidth={3} />
-                                <Text className="text-[#15803D] font-bold text-xs ml-2 text-center">{t("achieved")} 🎉</Text>
+                            <View className="mt-6 flex-row items-center bg-[#A5D6A744] px-5 py-2.5 rounded-2xl border border-[#A5D6A7]">
+                                <CheckCircle2 size={16} color="#66BB6A" strokeWidth={3} />
+                                <Text className="text-[#66BB6A] font-black text-xs ml-2 tracking-wide uppercase">{t("achieved")} 🎉</Text>
                             </View>
                         ) : (
-                            <Text className="text-[#94A3B8] dark:text-slate-400 text-xs font-semibold mt-4 text-center px-6">
+                            <Text className="text-[#757575] dark:text-[#94A3B8] text-xs font-bold mt-4 text-center px-10 tracking-tight leading-4">
                                 {t("hydration_progress", { percentage })}
                             </Text>
                         )}
                     </View>
 
-                    <View className="items-center py-8">
+                    <View className="items-center py-6">
                         <WaterJar percentage={percentage} ml={consumption} />
                     </View>
 
-                    <View className="px-6 py-6 flex-row justify-between">
+                    <View className="px-6 py-4 flex-row justify-between">
                         {[100, 250, 500].map((amount) => (
                             <TouchableOpacity
                                 key={amount}
                                 disabled={isGoalReached}
                                 onPress={() => handleQuickAdd(amount)}
-                                className={`flex-1 mx-2 py-6 rounded-[36px] shadow-sm border items-center justify-center active:scale-95 transition-all ${isGoalReached ? 'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700' : 'bg-white dark:bg-dark-surface border-slate-50 dark:border-slate-800'}`}
+                                activeOpacity={0.7}
+                                className={`flex-1 mx-2 py-7 rounded-[40px] shadow-sm border items-center justify-center active:scale-95 transition-all ${isGoalReached ? 'bg-[#F5F5F5] dark:bg-[#0F172A] border-[#E0E0E0] dark:border-[#1E293B]' : 'bg-white dark:bg-[#1E293B] border-[#F5F5F5] dark:border-[#334155]'}`}
+                                style={!isGoalReached ? {
+                                    shadowColor: '#0288D1',
+                                    shadowOffset: { width: 0, height: 4 },
+                                    shadowOpacity: 0.1,
+                                    shadowRadius: 8,
+                                    elevation: 2
+                                } : {}}
                             >
-                                <View className={`p-2 rounded-2xl mb-2 ${isGoalReached ? 'bg-slate-200 dark:bg-slate-700' : 'bg-[#00BDD6]/10'}`}>
-                                    <Plus size={20} color={isGoalReached ? (colorScheme === 'dark' ? "#475569" : "#94A3B8") : "#00BDD6"} strokeWidth={3} />
+                                <View className={`p-2.5 rounded-2xl mb-3 ${isGoalReached ? 'bg-[#E0E0E0] dark:bg-[#1E293B]' : 'bg-[#0288D1]15'}`} style={!isGoalReached ? { backgroundColor: '#0288D115' } : {}}>
+                                    <Plus size={20} color={isGoalReached ? "#757575" : "#0288D1"} strokeWidth={3} />
                                 </View>
-                                <Text className={`font-black text-lg ${isGoalReached ? 'text-slate-400 dark:text-slate-500' : 'text-[#1E293B] dark:text-white'}`}>+{amount}</Text>
-                                <Text className={`text-[10px] font-bold uppercase ${isGoalReached ? 'text-slate-300 dark:text-slate-600' : 'text-[#94A3B8]'}`}>{t("ml")}</Text>
+                                <Text className={`font-black text-xl ${isGoalReached ? 'text-[#E0E0E0] dark:text-[#334155]' : 'text-[#212121] dark:text-white'}`}>+{amount}</Text>
+                                <Text className={`text-[10px] font-black uppercase tracking-widest ${isGoalReached ? 'text-[#E0E0E0] dark:text-[#334155]' : 'text-[#00BCD4]'}`}>{t("ml")}</Text>
                             </TouchableOpacity>
                         ))}
                     </View>
 
                     {isGoalReached && (
-                        <View className="px-10 mt-2">
-                            <Text className="text-[#94A3B8] dark:text-slate-500 text-[10px] text-center font-bold uppercase tracking-wider leading-5">
+                        <View className="px-10 mt-4 flex-row items-center justify-center">
+                            <View className="h-[1px] flex-1 bg-[#E0E0E0] dark:bg-[#1E293B]" />
+                            <Text className="text-[#757575] dark:text-[#94A3B8] text-[10px] mx-4 font-black uppercase tracking-widest">
                                 {t("max_limit")} 👋
                             </Text>
+                            <View className="h-[1px] flex-1 bg-[#E0E0E0] dark:bg-[#1E293B]" />
                         </View>
                     )}
                 </ScrollView>
