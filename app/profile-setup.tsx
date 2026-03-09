@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, Dimensions, KeyboardAvoidingView, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router, useFocusEffect } from 'expo-router';
@@ -21,6 +21,8 @@ export default function ProfileSetupScreen() {
         gender: 'male' as 'male' | 'female',
         weight: '70',
         height: '',
+        wakeUpTime: '07:00',
+        bedTime: '23:00',
     });
 
     useFocusEffect(
@@ -36,6 +38,8 @@ export default function ProfileSetupScreen() {
                             gender: existing.gender || 'male',
                             weight: existing.weight || '70',
                             height: existing.height || '',
+                            wakeUpTime: existing.wakeUpTime || '07:00',
+                            bedTime: existing.bedTime || '23:00',
                         });
                         if (existing.heightUnit === 'ft') {
                             setHeightUnit('ft');
@@ -85,7 +89,6 @@ export default function ProfileSetupScreen() {
                         <Text className={`font-black text-[10px] uppercase tracking-widest ${heightUnit === 'cm' ? 'text-[#0288D1]' : 'text-[#757575]'}`}>{t('cm')}</Text>
                     </TouchableOpacity>
                 </View>
-
 
                 <View className="items-center mb-10 w-full">
                     {heightUnit === 'ft' ? (
@@ -145,8 +148,114 @@ export default function ProfileSetupScreen() {
         );
     };
 
+    const TimePicker = ({ label, value, onChange, icon, desc }: any) => {
+        const parts = (value || "07:00").split(':');
+        const h24 = parseInt(parts[0]) || 0;
+        const mStr = parts[1] || '00';
+
+        const isPm = h24 >= 12;
+        const displayH = String(h24 % 12 || 12);
+
+        const [localH, setLocalH] = useState(displayH);
+        const [localM, setLocalM] = useState(mStr);
+
+        useEffect(() => {
+            const p = (value || "07:00").split(':');
+            const h = parseInt(p[0]) || 0;
+            setLocalH(String(h % 12 || 12));
+            setLocalM(p[1] || '00');
+        }, [value]);
+
+        const applyChange = (hText: string, mText: string, pm: boolean) => {
+            let numH = parseInt(hText);
+            if (isNaN(numH)) numH = 0;
+            if (numH > 12) numH = 12;
+
+            let numM = parseInt(mText);
+            if (isNaN(numM)) numM = 0;
+            if (numM > 59) numM = 59;
+
+            let finalH = numH;
+            if (pm && numH !== 12) finalH += 12;
+            if (!pm && numH === 12) finalH = 0;
+
+            const finalHStr = String(finalH).padStart(2, '0');
+            const finalMStr = String(numM).padStart(2, '0');
+            onChange(`${finalHStr}:${finalMStr}`);
+        };
+
+        const onBlurH = () => {
+            let numH = parseInt(localH);
+            if (isNaN(numH) || numH === 0) numH = 12;
+            setLocalH(String(numH));
+            applyChange(String(numH), localM, isPm);
+        };
+
+        const onBlurM = () => {
+            let numM = parseInt(localM);
+            if (isNaN(numM)) numM = 0;
+            const padM = String(numM).padStart(2, '0');
+            setLocalM(padM);
+            applyChange(localH, padM, isPm);
+        };
+
+        return (
+            <View className="bg-[#F5F5F5] p-6 rounded-[32px] border border-[#E0E0E0] mb-6 w-full">
+                <View className="flex-row items-center mb-6 px-2">
+                    <MaterialCommunityIcons name={icon} size={24} color="#0288D1" />
+                    <Text className="text-[#757575] text-[10px] font-black uppercase tracking-[2px] ml-3">{label}</Text>
+                </View>
+
+                <View className="flex-row items-center justify-between px-2">
+                    <View className="flex-row items-center">
+                        <View className="bg-white rounded-[24px] shadow-sm border border-[#E0E0E0] items-center justify-center w-[72px] h-[72px]">
+                            <TextInput
+                                className="text-[#212121] font-black text-4xl text-center w-full"
+                                keyboardType="numeric"
+                                value={localH}
+                                onChangeText={setLocalH}
+                                onBlur={onBlurH}
+                                maxLength={2}
+                            />
+                        </View>
+                        <Text className="text-[#E0E0E0] font-black text-4xl mx-3">:</Text>
+                        <View className="bg-white rounded-[24px] shadow-sm border border-[#E0E0E0] items-center justify-center w-[72px] h-[72px]">
+                            <TextInput
+                                className="text-[#212121] font-black text-4xl text-center w-full"
+                                keyboardType="numeric"
+                                value={localM}
+                                onChangeText={setLocalM}
+                                onBlur={onBlurM}
+                                maxLength={2}
+                            />
+                        </View>
+                    </View>
+
+                    <View className="bg-white rounded-[20px] p-1 shadow-sm border border-[#E0E0E0] w-[64px]">
+                        <TouchableOpacity
+                            onPress={() => applyChange(localH, localM, false)}
+                            activeOpacity={0.8}
+                            className={`py-[10px] rounded-[16px] mb-1 items-center justify-center ${!isPm ? 'bg-[#0288D1]' : 'bg-transparent'}`}
+                        >
+                            <Text className={`font-black tracking-widest text-[10px] ${!isPm ? 'text-white' : 'text-[#757575]'}`}>AM</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => applyChange(localH, localM, true)}
+                            activeOpacity={0.8}
+                            className={`py-[10px] rounded-[16px] items-center justify-center ${isPm ? 'bg-[#0288D1]' : 'bg-transparent'}`}
+                        >
+                            <Text className={`font-black tracking-widest text-[10px] ${isPm ? 'text-white' : 'text-[#757575]'}`}>PM</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+
+                <Text className="text-[#757575] text-xs mt-6 font-medium italic px-2">{desc}</Text>
+            </View>
+        );
+    };
+
     const handleNext = async () => {
-        if (step < 3) {
+        if (step < 4) {
             setStep(step + 1);
         } else {
             const weightNum = parseFloat(profile.weight) || 70;
@@ -210,10 +319,10 @@ export default function ProfileSetupScreen() {
                         <ChevronLeft size={22} color="#212121" />
                     </TouchableOpacity>
                     <View className="flex-row px-2">
-                        {[1, 2, 3].map((s) => (
+                        {[1, 2, 3, 4].map((s) => (
                             <View
                                 key={s}
-                                className={`w-2.5 h-1 rounded-full mx-1 ${s === step ? 'bg-[#0288D1] w-6' : 'bg-[#E0E0E0]'}`}
+                                className={`w-2 h-1 rounded-full mx-1 ${s === step ? 'bg-[#0288D1] w-5' : 'bg-[#E0E0E0]'}`}
                             />
                         ))}
                     </View>
@@ -252,7 +361,7 @@ export default function ProfileSetupScreen() {
                                     <View className="flex-row justify-between">
                                         <TouchableOpacity
                                             onPress={() => setProfile({ ...profile, gender: 'male' })}
-                                            className={`w-[48%] py-5 rounded-[32px] flex-row items-center justify-center border ${profile.gender === 'male' ? 'bg-[#0288D1] border-[#0288D1]' : 'bg-[#F5F5F5] border-[#E0E0E0]'}`}
+                                            className={`w-[48%] py-4 rounded-[32px] flex-row items-center justify-center border ${profile.gender === 'male' ? 'bg-[#0288D1] border-[#0288D1]' : 'bg-[#F5F5F5] border-[#E0E0E0]'}`}
                                         >
                                             <MaterialCommunityIcons
                                                 name="human-male"
@@ -264,7 +373,7 @@ export default function ProfileSetupScreen() {
                                         </TouchableOpacity>
                                         <TouchableOpacity
                                             onPress={() => setProfile({ ...profile, gender: 'female' })}
-                                            className={`w-[48%] py-5 rounded-[32px] flex-row items-center justify-center border ${profile.gender === 'female' ? 'bg-[#0288D1] border-[#0288D1]' : 'bg-[#F5F5F5] border-[#E0E0E0]'}`}
+                                            className={`w-[48%] py-4 rounded-[32px] flex-row items-center justify-center border ${profile.gender === 'female' ? 'bg-[#0288D1] border-[#0288D1]' : 'bg-[#F5F5F5] border-[#E0E0E0]'}`}
                                         >
                                             <MaterialCommunityIcons
                                                 name="human-female"
@@ -313,8 +422,32 @@ export default function ProfileSetupScreen() {
                             </View>
                         )}
 
+                        {step === 4 && (
+                            <View className="items-center">
+                                <Text className="text-[#212121] dark:text-white font-black text-3xl mb-4 text-center px-6 tracking-tight">{t('set_sleep_cycle')}</Text>
+                                <Text className="text-[#757575] text-sm text-center px-10 leading-5 mb-10 italic">{t('height_desc')}</Text>
+
+                                <View className="w-full">
+                                    <TimePicker
+                                        label={t('wake_up_time')}
+                                        value={profile.wakeUpTime}
+                                        onChange={(v: string) => setProfile({ ...profile, wakeUpTime: v })}
+                                        icon="weather-sunset-up"
+                                        desc={t('wake_up_desc')}
+                                    />
+                                    <TimePicker
+                                        label={t('bed_time')}
+                                        value={profile.bedTime}
+                                        onChange={(v: string) => setProfile({ ...profile, bedTime: v })}
+                                        icon="weather-night"
+                                        desc={t('bed_time_desc')}
+                                    />
+                                </View>
+                            </View>
+                        )}
+
                         <TouchableOpacity
-                            className="mt-14 bg-[#0288D1] py-5 rounded-[32px] shadow-xl shadow-[#0288D1]/30 flex-row items-center justify-center mb-20"
+                            className="mt-14 bg-[#0288D1] py-4 rounded-[32px] shadow-xl shadow-[#0288D1]/30 flex-row items-center justify-center mb-20"
                             onPress={handleNext}
                         >
                             <Text className="text-white font-black text-xl mr-3 tracking-tight">{t('next')}</Text>

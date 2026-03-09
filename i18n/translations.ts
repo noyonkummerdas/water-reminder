@@ -95,7 +95,27 @@ export const translations = {
             today_progress: "Today's Progress",
             progress_for: "Progress for {{date}}",
             hydration_complete: "Hydration complete! 🌟",
-            keep_drinking: "Keep drinking to reach your goal!"
+            keep_drinking: "Keep drinking to reach your goal!",
+            hello: "Hello",
+            today_goal: "Today's Goal",
+            next_reminder: "Next Reminder",
+            add_manually: "Add Manually",
+            daily_goal_reached: "Daily Goal Reached!",
+            remaining: "Remaining",
+            view_all: "View All",
+            no_logs_today: "No water logs for today",
+            wake_up_time: "Wake up time",
+            bed_time: "Bedtime",
+            wake_up_desc: "When do you usually wake up?",
+            bed_time_desc: "When do you go to sleep?",
+            set_sleep_cycle: "Set Your Sleep Cycle",
+            drink: "Drink",
+            daily_schedule_overview: "Daily Schedule Overview",
+            total_reminders: "Total Reminders",
+            left_today: "Left Today",
+            upcoming_reminders: "All Reminders",
+            passed: "Passed",
+            upcoming: "Upcoming"
         }
     },
     bn: {
@@ -197,7 +217,27 @@ export const translations = {
             today_progress: "আজকের অগ্রগতি",
             progress_for: "{{date}} এর অগ্রগতি",
             hydration_complete: "হাইড্রেশন সম্পন্ন হয়েছে! 🌟",
-            keep_drinking: "আপনার লক্ষ্যে পৌঁছাতে পানি পান করতে থাকুন!"
+            keep_drinking: "আপনার লক্ষ্যে পৌঁছাতে পানি পান করতে থাকুন!",
+            hello: "হ্যালো",
+            today_goal: "আজকের লক্ষ্য",
+            next_reminder: "পরবর্তী রিমাইন্ডার",
+            add_manually: "ম্যানুয়ালি যোগ করুন",
+            daily_goal_reached: "দৈনিক লক্ষ্য পূরণ হয়েছে!",
+            remaining: "বাকি আছে",
+            view_all: "সব দেখুন",
+            no_logs_today: "আজকের কোনো লগ পাওয়া যায়নি",
+            wake_up_time: "ঘুম থেকে ওঠার সময়",
+            bed_time: "ঘুমানোর সময়",
+            wake_up_desc: "আপনি সাধারণত কখন ঘুম থেকে ওঠেন?",
+            bed_time_desc: "আপনি কখন ঘুমান?",
+            set_sleep_cycle: "আপনার ঘুমের সময় সেট করুন",
+            drink: "পান করুন",
+            daily_schedule_overview: "দৈনিক শিডিউল ওভারভিউ",
+            total_reminders: "মোট রিমাইন্ডার",
+            left_today: "আজকের বাকি",
+            upcoming_reminders: "সব রিমাইন্ডার",
+            passed: "পার হয়েছে",
+            upcoming: "আসন্ন"
         }
     }
 };

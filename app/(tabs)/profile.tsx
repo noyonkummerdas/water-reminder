@@ -148,7 +148,7 @@ export default function ProfileScreen() {
                         height: 44,
                         alignItems: 'center',
                         justifyContent: 'center',
-                        borderRadius: 15,
+                        borderRadius: 10,
                         backgroundColor: isDark ? '#1E293B' : '#F5F5F5',
                         borderWidth: 1,
                         borderColor: isDark ? '#334155' : '#E0E0E0'

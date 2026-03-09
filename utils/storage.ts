@@ -10,6 +10,8 @@ export interface UserProfile {
     weight: string;
     height: string;
     dailyGoal: number;
+    wakeUpTime: string; // "HH:mm"
+    bedTime: string;    // "HH:mm"
     lastActiveDate: string;
 }
 
@@ -95,4 +97,91 @@ export const clearAllData = async () => {
     } catch (e) {
         console.error("Error clearing data", e);
     }
+};
+
+export const calculateSchedule = (profile: UserProfile, currentIntake?: number): DrinkLog[] => {
+    const { wakeUpTime, bedTime, dailyGoal } = profile;
+    if (!wakeUpTime || !bedTime || !dailyGoal) return [];
+
+    const parseTime = (time: string) => {
+        const [h, m] = time.split(':').map(Number);
+        return h * 60 + m;
+    };
+
+    const wakeMinutes = parseTime(wakeUpTime);
+    let bedMinutes = parseTime(bedTime);
+
+    if (bedMinutes <= wakeMinutes) {
+        bedMinutes += 24 * 60;
+    }
+
+    const totalActiveMinutes = bedMinutes - wakeMinutes;
+    const intervalMinutes = 120; // Drink every 2 hours
+    const numberOfReminders = Math.floor(totalActiveMinutes / intervalMinutes);
+
+    if (numberOfReminders <= 0) return [];
+
+    const amountPerReminder = Math.round(dailyGoal / numberOfReminders);
+    const schedule: DrinkLog[] = [];
+
+    const now = new Date();
+    const currentMinutesSystem = now.getHours() * 60 + now.getMinutes();
+
+    let expectedIntake = 0;
+    let upcomingCount = 0;
+
+    for (let i = 0; i < numberOfReminders; i++) {
+        const timeMinutes = wakeMinutes + (i * intervalMinutes);
+        const h = Math.floor((timeMinutes % (24 * 60)) / 60);
+        const m = timeMinutes % 60;
+        const timeStr = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+
+        schedule.push({
+            id: `sched_${i}`,
+            amount: amountPerReminder,
+            time: timeStr
+        });
+
+        // Determine if this reminder has passed
+        const itemMinutes = h * 60 + m;
+        if (itemMinutes <= currentMinutesSystem) {
+            expectedIntake += amountPerReminder;
+        } else {
+            upcomingCount++;
+        }
+    }
+
+    // Redistribute missed intake across upcoming reminders
+    if (currentIntake !== undefined && upcomingCount > 0) {
+        const missedAmount = Math.max(0, expectedIntake - currentIntake);
+        if (missedAmount > 0) {
+            const extraPerReminder = Math.round(missedAmount / upcomingCount);
+
+            for (const item of schedule) {
+                const [h, m] = item.time.split(':').map(Number);
+                const itemMinutes = h * 60 + m;
+                if (itemMinutes > currentMinutesSystem) {
+                    item.amount += extraPerReminder;
+                }
+            }
+        }
+    }
+
+    return schedule;
+};
+
+export const getExpectedIntake = (profile: UserProfile): number => {
+    const schedule = calculateSchedule(profile); // Base schedule to see past requirements
+    const now = new Date();
+    const currentMinutesSystem = now.getHours() * 60 + now.getMinutes();
+
+    let expectedIntake = 0;
+    for (const item of schedule) {
+        const [h, m] = item.time.split(':').map(Number);
+        if (h * 60 + m <= currentMinutesSystem) {
+            expectedIntake += item.amount;
+        }
+    }
+
+    return expectedIntake;
 };

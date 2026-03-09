@@ -100,7 +100,7 @@ export default function LoginScreen() {
                         </View>
 
                         <TouchableOpacity
-                            className="bg-[#0288D1] py-5 rounded-[32px] shadow-xl shadow-[#0288D1]/30 flex-row items-center justify-center mb-10"
+                            className="bg-[#0288D1] py-4 rounded-[32px] shadow-xl shadow-[#0288D1]/30 flex-row items-center justify-center mb-10"
                             onPress={handleLogin}
                         >
                             <Text className="text-white font-black text-xl mr-3 tracking-tight">{t("sign_in")}</Text>
