@@ -140,34 +140,50 @@ const BottleProgress = ({ percentage, consumption, goal, t }: any) => {
                 <Path d="M52 2 L52 22 M60 2 L60 22 M68 2 L68 22 M76 2 L76 22 M84 2 L84 22" fill="none" stroke="#0097A7" strokeWidth="1.5" opacity="0.6" strokeLinecap="round" />
                 <Path d="M48 3 L48 21" fill="none" stroke="white" opacity="0.4" strokeWidth="1.5" />
 
-                {/* Measurement Ruler (Inside Left Side of Right Wall) */}
+                {/* Dynamic Measurement Ruler */}
                 {(() => {
                     const marks = [];
-                    // User requested every 100ml explicitly inside the bottle
-                    for (let i = 100; i <= goal; i += 100) {
+                    // 1. Draw 100ml dashes first (background layer of ruler)
+                    const step = goal > 2500 ? 200 : 100;
+                    for (let i = step; i < goal; i += step) {
                         const ratio = i / goal;
                         const yPos = FILLABLE_START_Y + FILLABLE_HEIGHT - (ratio * FILLABLE_HEIGHT);
-
                         marks.push(
-                            <G key={`mark-${i}`}>
+                            <Path
+                                key={`tick-${i}`}
+                                d={`M 115 ${yPos} L 110 ${yPos}`}
+                                stroke="rgba(255,255,255,0.4)"
+                                strokeWidth="1"
+                            />
+                        );
+                    }
+
+                    // 2. Draw 4 major segment labels (Quarter marks)
+                    const segments = [0.25, 0.5, 0.75, 1];
+                    segments.forEach(perc => {
+                        const val = Math.round(goal * perc);
+                        const yPos = FILLABLE_START_Y + FILLABLE_HEIGHT - (perc * FILLABLE_HEIGHT);
+                        marks.push(
+                            <G key={`label-${val}`}>
                                 <Path
                                     d={`M 115 ${yPos} L 105 ${yPos}`}
-                                    stroke="rgba(255,255,255,0.7)"
-                                    strokeWidth="1"
+                                    stroke="rgba(255,255,255,0.9)"
+                                    strokeWidth="1.5"
                                 />
                                 <SvgText
-                                    x="100"
-                                    y={yPos + 2}
+                                    x="95"
+                                    y={yPos + 3}
                                     fill="rgba(255,255,255,0.9)"
-                                    fontSize="7"
-                                    fontWeight="bold"
+                                    fontSize="9"
+                                    fontWeight="900"
                                     textAnchor="end"
                                 >
-                                    {i} ml
+                                    {val} ml
                                 </SvgText>
                             </G>
                         );
-                    }
+                    });
+
                     return marks;
                 })()}
             </Svg>
