@@ -3,6 +3,7 @@ import { View, Text, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ChevronLeft, Trash2, Droplets, Clock } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
+import { useColorScheme } from 'nativewind';
 
 import { router } from 'expo-router';
 import { useFocusEffect } from 'expo-router';
@@ -11,6 +12,7 @@ import { getTodayStr, getIntakeForDate, getProfile, UserProfile, DayData, INTAKE
 
 export default function DrinkHistoryScreen() {
     const { t } = useTranslation();
+    const { colorScheme } = useColorScheme();
 
     const [history, setHistory] = useState<DayData | null>(null);
     const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
@@ -53,15 +55,15 @@ export default function DrinkHistoryScreen() {
     };
 
     return (
-        <SafeAreaView className="flex-1 bg-[#F8FAFB]" edges={['top']}>
+        <SafeAreaView className="flex-1 bg-background dark:bg-dark-background" edges={['top']}>
             <View className="px-6 py-4 flex-row justify-between items-center">
                 <TouchableOpacity
                     onPress={() => router.replace('/(tabs)')}
-                    className="w-11 h-11 items-center justify-center rounded-2xl bg-white shadow-sm border border-slate-50"
+                    className="w-11 h-11 items-center justify-center rounded-2xl bg-white dark:bg-dark-surface shadow-sm border border-slate-50 dark:border-slate-800"
                 >
-                    <ChevronLeft size={22} color="#1E293B" />
+                    <ChevronLeft size={22} color={colorScheme === 'dark' ? "#F8FAFC" : "#1E293B"} />
                 </TouchableOpacity>
-                <Text className="text-[#1E293B] font-black text-xl text-center flex-1">{t("history")}</Text>
+                <Text className="text-[#1E293B] dark:text-white font-black text-xl text-center flex-1">{t("history")}</Text>
                 <View className="w-11" />
             </View>
 
@@ -81,18 +83,18 @@ export default function DrinkHistoryScreen() {
                     </View>
                 </View>
 
-                <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px] mb-4 ml-4">{t("logs")}</Text>
+                <Text className="text-[#94A3B8] dark:text-slate-400 text-[10px] font-bold uppercase tracking-[2px] mb-4 ml-4">{t("logs")}</Text>
 
                 {history?.logs && history.logs.length > 0 ? (
                     history.logs.map((log) => (
-                        <View key={log.id} className="bg-white p-5 rounded-[24px] shadow-sm border border-slate-50 mb-3 flex-row items-center justify-between">
+                        <View key={log.id} className="bg-white dark:bg-dark-surface p-5 rounded-[24px] shadow-sm border border-slate-50 dark:border-slate-800 mb-3 flex-row items-center justify-between">
                             <View className="flex-row items-center">
-                                <View className="w-12 h-12 bg-slate-50 rounded-2xl items-center justify-center mr-4">
+                                <View className="w-12 h-12 bg-slate-50 dark:bg-slate-800 rounded-2xl items-center justify-center mr-4">
                                     <Clock size={20} color="#00BDD6" />
                                 </View>
                                 <View>
-                                    <Text className="text-[#1E293B] font-black text-base">{log.amount} {t("ml")}</Text>
-                                    <Text className="text-[#94A3B8] font-bold text-xs">{log.time}</Text>
+                                    <Text className="text-[#1E293B] dark:text-white font-black text-base">{log.amount} {t("ml")}</Text>
+                                    <Text className="text-[#94A3B8] dark:text-slate-400 font-bold text-xs">{log.time}</Text>
                                 </View>
                             </View>
                             <TouchableOpacity onPress={() => handleDeleteLog(log.id)} className="p-2">

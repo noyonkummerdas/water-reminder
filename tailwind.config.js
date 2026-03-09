@@ -5,6 +5,7 @@ module.exports = {
     "./components/**/*.{js,jsx,ts,tsx}",
     "./services/**/*.{js,jsx,ts,tsx}",
   ],
+  darkMode: "class",
   presets: [require("nativewind/preset")],
   theme: {
     extend: {
@@ -20,8 +21,14 @@ module.exports = {
           indigo: "#6366F1",
           emerald: "#10B981",
         },
-        background: "#F8FAFB",
+        background: "#F1F5F9", // Slate-100 as the new light gray base
         surface: "#FFFFFF",
+        dark: {
+          background: "#020617", // Slate-950
+          surface: "#0F172A",    // Slate-900
+          text: "#F8FAFC",       // Slate-50
+          accent: "#00BDD6",
+        },
         slate: {
           50: "#F8FAFC",
           100: "#F1F5F9",

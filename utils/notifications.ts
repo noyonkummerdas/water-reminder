@@ -72,8 +72,16 @@ export async function scheduleWaterReminder() {
                     title: "Time to hydrate! 💧",
                     body: "Drinking water regularly keeps you energized and focused. Take a sip now!",
                     data: { screen: 'index' },
+                    // In modern Expo, channelId is at the top level of the content object for Android
+                    // @ts-ignore
+                    channelId: 'default',
                 },
-                trigger: {
+                trigger: Platform.OS === 'ios' ? {
+                    type: 'calendar',
+                    hour: hour,
+                    minute: 0,
+                    repeats: true,
+                } : {
                     hour: hour,
                     minute: 0,
                     repeats: true,

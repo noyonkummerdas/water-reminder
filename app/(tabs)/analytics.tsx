@@ -3,6 +3,7 @@ import { View, Text, ScrollView, TouchableOpacity, Dimensions } from 'react-nati
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ChevronLeft, Calendar as CalendarIcon, Droplets, TrendingUp, ChevronRight } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
+import { useColorScheme } from 'nativewind';
 
 import { router } from 'expo-router';
 import { useFocusEffect } from 'expo-router';
@@ -13,6 +14,7 @@ const { width } = Dimensions.get('window');
 
 export default function AnalyticsScreen() {
     const { t } = useTranslation();
+    const { colorScheme } = useColorScheme();
 
     const todayStr = getTodayStr();
     const [selectedDate, setSelectedDate] = useState(todayStr);
@@ -80,16 +82,16 @@ export default function AnalyticsScreen() {
     if (isLoading && !userProfile) return null;
 
     return (
-        <SafeAreaView className="flex-1 bg-[#F8FAFB]" edges={['top']}>
+        <SafeAreaView className="flex-1 bg-background dark:bg-dark-background" edges={['top']}>
             <View className="flex-1">
                 <View className="px-6 py-4 flex-row justify-between items-center">
                     <TouchableOpacity
                         onPress={() => router.back()}
-                        className="w-11 h-11 items-center justify-center rounded-2xl bg-white shadow-sm border border-slate-50"
+                        className="w-11 h-11 items-center justify-center rounded-2xl bg-white dark:bg-dark-surface shadow-sm border border-slate-50 dark:border-slate-800"
                     >
-                        <ChevronLeft size={22} color="#1E293B" />
+                        <ChevronLeft size={22} color={colorScheme === 'dark' ? "#F8FAFC" : "#1E293B"} />
                     </TouchableOpacity>
-                    <Text className="text-[#1E293B] font-black text-xl text-center flex-1">{t("statistics")}</Text>
+                    <Text className="text-[#1E293B] dark:text-white font-black text-xl text-center flex-1">{t("statistics")}</Text>
                     <View className="w-11" />
                 </View>
 
@@ -104,13 +106,13 @@ export default function AnalyticsScreen() {
                             </Text>
                             <ChevronRight size={16} color="white" style={{ transform: [{ rotate: '90deg' }] }} />
                         </TouchableOpacity>
-                        <TouchableOpacity className="w-13 h-13 items-center justify-center rounded-[16px] bg-white shadow-sm border border-slate-50">
+                        <TouchableOpacity className="w-13 h-13 items-center justify-center rounded-[16px] bg-white dark:bg-dark-surface shadow-sm border border-slate-50 dark:border-slate-800">
                             <CalendarIcon size={22} color="#00BDD6" />
                         </TouchableOpacity>
                     </View>
 
                     <View className="px-6 mb-6">
-                        <View className="bg-white p-6 rounded-[20px] shadow-lg border border-slate-100">
+                        <View className="bg-white dark:bg-dark-surface p-6 rounded-[20px] shadow-lg border border-slate-100 dark:border-slate-800">
                             <ScrollView horizontal showsHorizontalScrollIndicator={false} className="flex-row">
                                 {Array.from({ length: viewMode === 'week' ? 10 : daysInMonth }, (_, i) => {
                                     const dayNum = viewMode === 'week' ? (currentDate.getDate() - 9 + i) : (i + 1);
@@ -128,13 +130,13 @@ export default function AnalyticsScreen() {
                                         <TouchableOpacity
                                             key={dateStr}
                                             onPress={() => setSelectedDate(dateStr)}
-                                            className={`items-center justify-center w-14 h-26 rounded-[20px] mr-3 ${isSelected ? 'bg-[#00BDD6]' : isToday ? 'bg-[#E6F4FE]' : 'bg-[#F8FAFB]'}`}
+                                            className={`items-center justify-center w-14 h-26 rounded-[20px] mr-3 ${isSelected ? 'bg-[#00BDD6]' : isToday ? (colorScheme === 'dark' ? 'bg-slate-800' : 'bg-[#E6F4FE]') : (colorScheme === 'dark' ? 'bg-slate-900' : 'bg-[#F8FAFB]')}`}
                                         >
                                             <View className="items-center justify-center">
-                                                <Text className={`text-[10px] font-bold uppercase mb-2 ${isSelected ? 'text-white/70' : isToday ? 'text-[#00BDD6]' : 'text-[#94A3B8]'}`}>
+                                                <Text className={`text-[10px] font-bold uppercase mb-2 ${isSelected ? 'text-white/70' : isToday ? 'text-[#00BDD6]' : 'text-[#94A3B8] dark:text-slate-500'}`}>
                                                     {dayName}
                                                 </Text>
-                                                <Text className={`font-black text-lg ${isSelected ? 'text-white' : 'text-[#1E293B]'}`}>
+                                                <Text className={`font-black text-lg ${isSelected ? 'text-white' : 'text-[#1E293B] dark:text-white'}`}>
                                                     {displayDay}
                                                 </Text>
                                                 <View className="mt-2 h-4 items-center justify-center">
@@ -153,27 +155,27 @@ export default function AnalyticsScreen() {
                     </View>
 
                     <View className="px-6 py-4">
-                        <View className="bg-white p-8 rounded-[10px] shadow-lg border border-slate-100">
-                            <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[ link text](file:///d%3A/Techsoul/water-reminder/app/%28tabs%29/analytics.tsx#L150-160)2px] mb-6">
+                        <View className="bg-white dark:bg-dark-surface p-8 rounded-[10px] shadow-lg border border-slate-100 dark:border-slate-800">
+                            <Text className="text-[#94A3B8] dark:text-slate-400 text-[10px] font-bold uppercase tracking-[ link text](file:///d%3A/Techsoul/water-reminder/app/%28tabs%29/analytics.tsx#L150-160)2px] mb-6">
                                 {selectedDate === todayStr ? t("today_progress") : t("progress_for", { date: selectedDate })}
                             </Text>
                             <View className="flex-row items-center justify-between">
                                 <View>
                                     <View className="flex-row items-baseline">
-                                        <Text className="text-[#1E293B] font-black text-6xl">{percentage}</Text>
-                                        <Text className="text-[#1E293B] font-bold text-2xl ml-1">%</Text>
+                                        <Text className="text-[#1E293B] dark:text-white font-black text-6xl">{percentage}</Text>
+                                        <Text className="text-[#1E293B] dark:text-white font-bold text-2xl ml-1">%</Text>
                                     </View>
-                                    <Text className="text-[#94A3B8] text-xs mt-2 w-36 leading-5">
+                                    <Text className="text-[#94A3B8] dark:text-slate-400 text-xs mt-2 w-36 leading-5">
                                         {percentage >= 100 ? t("hydration_complete") : t("keep_drinking")}
                                     </Text>
                                 </View>
                                 <View className="relative">
                                     <Svg width="110" height="110" viewBox="0 0 100 100">
-                                        <Circle cx="50" cy="50" r="42" stroke="#F1F5F9" strokeWidth="12" fill="none" />
+                                        <Circle cx="50" cy="50" r="42" stroke={colorScheme === 'dark' ? "#1E293B" : "#F1F5F9"} strokeWidth="12" fill="none" />
                                         <Circle
                                             cx="50" cy="50" r="42"
                                             stroke="#00BDD6" strokeWidth="12"
-                                            fill="#E6F4FE"
+                                            fill={colorScheme === 'dark' ? "#0F172A" : "#E6F4FE"}
                                             strokeDasharray={circumference}
                                             strokeDashoffset={strokeDashoffset}
                                             strokeLinecap="round"
@@ -189,25 +191,25 @@ export default function AnalyticsScreen() {
                     </View>
 
                     <View className="px-6 py-2 flex-row justify-between">
-                        <View className="flex-1 bg-white p-6 rounded-[30px] shadow-sm border border-slate-100 mr-2">
-                            <View className="bg-[#E6F4FE] w-12 h-12 items-center justify-center rounded-xl mb-4">
+                        <View className="flex-1 bg-white dark:bg-dark-surface p-6 rounded-[30px] shadow-sm border border-slate-100 dark:border-slate-800 mr-2">
+                            <View className="bg-[#E6F4FE] dark:bg-slate-800 w-12 h-12 items-center justify-center rounded-xl mb-4">
                                 <Droplets size={24} color="#00BDD6" />
                             </View>
-                            <Text className="text-[#94A3B8] text-[9px] font-bold uppercase tracking-wider mb-2">{t("total_intake")}</Text>
+                            <Text className="text-[#94A3B8] dark:text-slate-400 text-[9px] font-bold uppercase tracking-wider mb-2">{t("total_intake")}</Text>
                             <View className="flex-row items-baseline">
-                                <Text className="text-[#1E293B] font-black text-2xl">{(dayData.intake / 1000).toFixed(2)}</Text>
-                                <Text className="text-[#94A3B8] font-bold text-base ml-1.5">L</Text>
+                                <Text className="text-[#1E293B] dark:text-white font-black text-2xl">{(dayData.intake / 1000).toFixed(2)}</Text>
+                                <Text className="text-[#94A3B8] dark:text-slate-400 font-bold text-base ml-1.5">L</Text>
                             </View>
                         </View>
 
-                        <View className="flex-1 bg-white p-6 rounded-[30px] shadow-sm border border-slate-100 ml-2">
-                            <View className="bg-[#DCFCE7] w-12 h-12 items-center justify-center rounded-xl mb-4">
+                        <View className="flex-1 bg-white dark:bg-dark-surface p-6 rounded-[30px] shadow-sm border border-slate-100 dark:border-slate-800 ml-2">
+                            <View className="bg-[#DCFCE7] dark:bg-slate-800 w-12 h-12 items-center justify-center rounded-xl mb-4">
                                 <TrendingUp size={24} color="#22C55E" />
                             </View>
-                            <Text className="text-[#94A3B8] text-[9px] font-bold uppercase tracking-wider mb-2">{t("daily_goal")}</Text>
+                            <Text className="text-[#94A3B8] dark:text-slate-400 text-[9px] font-bold uppercase tracking-wider mb-2">{t("daily_goal")}</Text>
                             <View className="flex-row items-baseline">
-                                <Text className="text-[#1E293B] font-black text-2xl">{(dayData.goal / 1000).toFixed(1)}</Text>
-                                <Text className="text-[#94A3B8] font-bold text-base ml-1.5">L</Text>
+                                <Text className="text-[#1E293B] dark:text-white font-black text-2xl">{(dayData.goal / 1000).toFixed(1)}</Text>
+                                <Text className="text-[#94A3B8] dark:text-slate-400 font-bold text-base ml-1.5">L</Text>
                             </View>
                         </View>
                     </View>
