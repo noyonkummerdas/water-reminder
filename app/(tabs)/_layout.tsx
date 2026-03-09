@@ -1,5 +1,6 @@
 import React from 'react';
 import { Tabs } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { LayoutGrid, BarChart3, GlassWater, User, Plus } from 'lucide-react-native';
 import { View, Dimensions, StyleSheet } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
@@ -31,6 +32,7 @@ const TabBarBackground = () => (
 );
 
 export default function TabLayout() {
+    const { t } = useTranslation();
     return (
         <Tabs
             screenOptions={{
@@ -54,7 +56,7 @@ export default function TabLayout() {
             <Tabs.Screen
                 name="index"
                 options={{
-                    title: 'Home',
+                    title: t('home'),
                     tabBarIcon: ({ color, focused }) => (
                         <View className="items-center">
                             {focused && <View className="w-1.5 h-1.5 rounded-full bg-[#00BDD6] mb-1" />}
@@ -66,7 +68,7 @@ export default function TabLayout() {
             <Tabs.Screen
                 name="analytics"
                 options={{
-                    title: 'Stats',
+                    title: t('statistics'),
                     tabBarIcon: ({ color, focused }) => (
                         <View className="items-center">
                             {focused && <View className="w-1.5 h-1.5 rounded-full bg-[#00BDD6] mb-1" />}
@@ -104,7 +106,7 @@ export default function TabLayout() {
             <Tabs.Screen
                 name="settings"
                 options={{
-                    title: 'Drink',
+                    title: t('history'),
                     tabBarIcon: ({ color, focused }) => (
                         <View className="items-center">
                             {focused && <View className="w-1.5 h-1.5 rounded-full bg-[#00BDD6] mb-1" />}
@@ -116,7 +118,7 @@ export default function TabLayout() {
             <Tabs.Screen
                 name="profile"
                 options={{
-                    title: 'User',
+                    title: t('my_profile'),
                     tabBarIcon: ({ color, focused }) => (
                         <View className="items-center">
                             {focused && <View className="w-1.5 h-1.5 rounded-full bg-[#00BDD6] mb-1" />}

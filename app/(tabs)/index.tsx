@@ -2,11 +2,15 @@ import React, { useState, useCallback } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { BadgeCheck, Plus, User, CheckCircle2 } from 'lucide-react-native';
+import { useTranslation } from 'react-i18next';
+
 import { useFocusEffect } from '@react-navigation/native';
 import WaterJar from '../../components/WaterJar';
-import { getProfile, getIntakeForDate, saveIntake, getTodayStr, UserProfile } from '../../utils/storage';
+import { getTodayStr, getIntakeForDate, getProfile, UserProfile, saveIntake } from '../../utils/storage';
 
 export default function HomeScreen() {
+    const { t } = useTranslation();
+
     const [consumption, setConsumption] = useState(0);
     const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -63,11 +67,11 @@ export default function HomeScreen() {
                             <Text className="text-[#1E293B] font-bold text-lg">{userName}</Text>
                             <View className="flex-row items-center">
                                 <Text className="text-[#94A3B8] text-[10px] uppercase font-bold tracking-widest">
-                                    Goal: {dailyGoal} ml
+                                    {t("goal")}: {dailyGoal} {t("ml")}
                                 </Text>
                                 <Text className="mx-1.5 text-[#CBD5E1] text-[10px]">•</Text>
                                 <Text className="text-[#00BDD6] text-[10px] uppercase font-bold">
-                                    {gender}
+                                    {t(gender)}
                                 </Text>
                             </View>
                         </View>
@@ -84,18 +88,18 @@ export default function HomeScreen() {
                 >
                     <View className="items-center mt-6 px-6">
                         <View className="flex-row items-center">
-                            <Text className="text-[#00BDD6] font-black text-4xl">{consumption} ML</Text>
-                            <Text className="text-[#1E293B] font-black text-3xl ml-3">so far 🎯</Text>
+                            <Text className="text-[#00BDD6] font-black text-4xl">{consumption} {t("ml")}</Text>
+                            <Text className="text-[#1E293B] font-black text-3xl ml-3">{t("so_far")} 🎯</Text>
                         </View>
 
                         {isGoalReached ? (
                             <View className="mt-4 flex-row items-center bg-[#DCFCE7] px-4 py-2 rounded-2xl">
                                 <CheckCircle2 size={16} color="#22C55E" strokeWidth={3} />
-                                <Text className="text-[#15803D] font-bold text-xs ml-2">Daily Goal Achieved! 🎉</Text>
+                                <Text className="text-[#15803D] font-bold text-xs ml-2 text-center">{t("achieved")} 🎉</Text>
                             </View>
                         ) : (
-                            <Text className="text-[#94A3B8] text-xs font-semibold mt-4 text-center">
-                                You've reached <Text className="text-[#00BDD6] font-bold">{percentage}%</Text> of your daily hydration goal.
+                            <Text className="text-[#94A3B8] text-xs font-semibold mt-4 text-center px-6">
+                                {t("hydration_progress", { percentage })}
                             </Text>
                         )}
                     </View>
@@ -116,7 +120,7 @@ export default function HomeScreen() {
                                     <Plus size={20} color={isGoalReached ? "#94A3B8" : "#00BDD6"} strokeWidth={3} />
                                 </View>
                                 <Text className={`font-black text-lg ${isGoalReached ? 'text-slate-400' : 'text-[#1E293B]'}`}>+{amount}</Text>
-                                <Text className={`text-[10px] font-bold uppercase ${isGoalReached ? 'text-slate-300' : 'text-[#94A3B8]'}`}>ML</Text>
+                                <Text className={`text-[10px] font-bold uppercase ${isGoalReached ? 'text-slate-300' : 'text-[#94A3B8]'}`}>{t("ml")}</Text>
                             </TouchableOpacity>
                         ))}
                     </View>
@@ -124,7 +128,7 @@ export default function HomeScreen() {
                     {isGoalReached && (
                         <View className="px-10 mt-2">
                             <Text className="text-[#94A3B8] text-[10px] text-center font-bold uppercase tracking-wider leading-5">
-                                You've reached your maximum limit for today. {"\n"}See you tomorrow! 👋
+                                {t("max_limit")} 👋
                             </Text>
                         </View>
                     )}

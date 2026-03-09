@@ -3,26 +3,29 @@ import { View, Text, TextInput, TouchableOpacity, ScrollView, Animated as RNAnim
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { Mail, Lock, ArrowRight, Github } from 'lucide-react-native';
+import { useTranslation } from 'react-i18next';
 
 export default function LoginScreen() {
+    const { t, i18n } = useTranslation();
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const handleLogin = () => {
         if (!email.trim()) {
-            Alert.alert("Input Error", "Please enter your email address.");
+            Alert.alert(t("input_error"), t("enter_email"));
             return;
         }
         if (!email.includes('@')) {
-            Alert.alert("Input Error", "Please enter a valid email address.");
+            Alert.alert(t("input_error"), t("valid_email"));
             return;
         }
         if (!password.trim()) {
-            Alert.alert("Input Error", "Please enter your password.");
+            Alert.alert(t("input_error"), t("enter_password"));
             return;
         }
         if (password.length < 6) {
-            Alert.alert("Input Error", "Password must be at least 6 characters long.");
+            Alert.alert(t("input_error"), t("password_length"));
             return;
         }
 
@@ -44,14 +47,14 @@ export default function LoginScreen() {
                                 <View className="w-8 h-8 rounded-full border-4 border-white opacity-90" />
                             </View>
                         </View>
-                        <Text className="text-[#1E293B] font-black text-4xl mb-3">AquaFlow</Text>
-                        <Text className="text-[#94A3B8] text-lg font-medium">Drink water, stay healthy</Text>
+                        <Text className="text-[#1E293B] font-black text-4xl mb-3">{t("app_name")}</Text>
+                        <Text className="text-[#94A3B8] text-lg font-medium text-center px-4">{t("slogan")}</Text>
                     </View>
 
                     {/* Login Form */}
                     <View className="mb-8">
                         <View className="mb-6">
-                            <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px] mb-4 ml-4">Email Address</Text>
+                            <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px] mb-4 ml-4">{t("email")}</Text>
                             <View className="relative justify-center">
                                 <TextInput
                                     className="bg-white p-5 pl-16 rounded-[28px] shadow-sm border border-slate-50 text-lg"
@@ -69,9 +72,9 @@ export default function LoginScreen() {
 
                         <View className="mb-8">
                             <View className="flex-row justify-between items-center mb-4 ml-4">
-                                <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px]">Password</Text>
+                                <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px]">{t("password")}</Text>
                                 <TouchableOpacity>
-                                    <Text className="text-[#00BDD6] text-[10px] font-black uppercase tracking-[1px]">Forgot</Text>
+                                    <Text className="text-[#00BDD6] text-[10px] font-black uppercase tracking-[1px]">{t("forgot")}</Text>
                                 </TouchableOpacity>
                             </View>
                             <View className="relative">
@@ -92,15 +95,15 @@ export default function LoginScreen() {
                             className="bg-[#00BDD6] py-4 rounded-[28px] shadow-xl flex-row items-center justify-center mb-10"
                             onPress={handleLogin}
                         >
-                            <Text className="text-white font-black text-xl mr-3">Sign In</Text>
+                            <Text className="text-white font-black text-xl mr-3">{t("sign_in")}</Text>
                         </TouchableOpacity>
                     </View>
 
                     {/* Footer */}
                     <View className="flex-row justify-center items-center">
-                        <Text className="text-[#94A3B8] font-medium mr-2">New user?</Text>
+                        <Text className="text-[#94A3B8] font-medium mr-2">{t("new_user")}</Text>
                         <TouchableOpacity onPress={() => router.push('/(auth)/signup')}>
-                            <Text className="text-[#00BDD6] font-black">Create Account</Text>
+                            <Text className="text-[#00BDD6] font-black">{t("create_account")}</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>

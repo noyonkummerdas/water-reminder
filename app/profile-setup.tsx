@@ -1,8 +1,10 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, Dimensions, KeyboardAvoidingView, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { router } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import { ChevronLeft, ArrowRight } from 'lucide-react-native';
+import { useTranslation } from 'react-i18next';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { USER_PROFILE_KEY } from '../utils/storage';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -10,6 +12,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 const { width } = Dimensions.get('window');
 
 export default function ProfileSetupScreen() {
+    const { t } = useTranslation();
+
     const [step, setStep] = useState(1);
     const [profile, setProfile] = useState({
         name: '',
@@ -18,6 +22,36 @@ export default function ProfileSetupScreen() {
         weight: '70',
         height: '',
     });
+
+    useFocusEffect(
+        useCallback(() => {
+            const loadExistingProfile = async () => {
+                try {
+                    const data = await AsyncStorage.getItem(USER_PROFILE_KEY);
+                    if (data) {
+                        const existing = JSON.parse(data);
+                        setProfile({
+                            name: existing.name || '',
+                            age: existing.age || '',
+                            gender: existing.gender || 'male',
+                            weight: existing.weight || '70',
+                            height: existing.height || '',
+                        });
+                        if (existing.heightUnit === 'ft') {
+                            setHeightUnit('ft');
+                            setFeet(existing.feet || '');
+                            setInches(existing.inches || '');
+                        } else {
+                            setHeightUnit('cm');
+                        }
+                    }
+                } catch (e) {
+                    console.error("Error loading profile for edit:", e);
+                }
+            };
+            loadExistingProfile();
+        }, [])
+    );
 
     const [heightUnit, setHeightUnit] = useState<'cm' | 'ft'>('ft');
     const [feet, setFeet] = useState('');
@@ -29,28 +63,29 @@ export default function ProfileSetupScreen() {
             : (parseFloat(hValue) || 0));
 
         const displayEstimated = heightUnit === 'ft'
-            ? `Estimated: ${estimatedHeight} cm`
-            : `Estimated: ${(estimatedHeight / 30.48).toFixed(1)} feet`;
+            ? `${t('estimated')}: ${estimatedHeight} ${t('cm')}`
+            : `${t('estimated')}: ${(estimatedHeight / 30.48).toFixed(1)} ${t('feet')}`;
 
         return (
             <View className="items-center py-4">
-                <Text className="text-[#1E293B] font-black text-2xl mb-3">What is your <Text className="text-[#00BDD6]">height?</Text></Text>
-                <Text className="text-[#94A3B8] text-xs text-center px-12 leading-5 mb-8 italic">We will use this data to calculate your body hydration needs.</Text>
+                <Text className="text-[#1E293B] font-black text-2xl mb-3 text-center px-4">{t('height_ques')}</Text>
+                <Text className="text-[#94A3B8] text-xs text-center px-10 leading-5 mb-8 italic">{t('height_desc')}</Text>
 
-                <View className="flex-row bg-slate-100 p-1.5 rounded-[24px] mb-12 w-48 shadow-sm">
+                <View className="flex-row bg-slate-100 p-1.5 rounded-[24px] mb-12 w-56 shadow-sm">
                     <TouchableOpacity
                         onPress={() => setHeightUnit('ft')}
                         className={`flex-1 py-3 rounded-[20px] items-center ${heightUnit === 'ft' ? 'bg-white shadow-sm' : ''}`}
                     >
-                        <Text className={`font-black text-xs uppercase tracking-widest ${heightUnit === 'ft' ? 'text-[#00BDD6]' : 'text-[#94A3B8]'}`}>Feet</Text>
+                        <Text className={`font-black text-[10px] uppercase tracking-widest ${heightUnit === 'ft' ? 'text-[#00BDD6]' : 'text-[#94A3B8]'}`}>{t('feet')}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         onPress={() => setHeightUnit('cm')}
                         className={`flex-1 py-3 rounded-[20px] items-center ${heightUnit === 'cm' ? 'bg-white shadow-sm' : ''}`}
                     >
-                        <Text className={`font-black text-xs uppercase tracking-widest ${heightUnit === 'cm' ? 'text-[#00BDD6]' : 'text-[#94A3B8]'}`}>CM</Text>
+                        <Text className={`font-black text-[10px] uppercase tracking-widest ${heightUnit === 'cm' ? 'text-[#00BDD6]' : 'text-[#94A3B8]'}`}>{t('cm')}</Text>
                     </TouchableOpacity>
                 </View>
+
 
                 <View className="items-center mb-10 w-full">
                     {heightUnit === 'ft' ? (
@@ -67,7 +102,7 @@ export default function ProfileSetupScreen() {
                                         maxLength={1}
                                     />
                                 </View>
-                                <Text className="mt-4 text-[#00BDD6] font-black uppercase text-[10px] tracking-widest">Feet</Text>
+                                <Text className="mt-4 text-[#00BDD6] font-black uppercase text-[10px] tracking-widest">{t('feet')}</Text>
                             </View>
                             <Text className="text-slate-200 font-black text-4xl mb-8">'</Text>
                             <View className="items-center">
@@ -82,7 +117,7 @@ export default function ProfileSetupScreen() {
                                         maxLength={2}
                                     />
                                 </View>
-                                <Text className="mt-4 text-[#00BDD6] font-black uppercase text-[10px] tracking-widest">Inches</Text>
+                                <Text className="mt-4 text-[#00BDD6] font-black uppercase text-[10px] tracking-widest">{t('inches')}</Text>
                             </View>
                         </View>
                     ) : (
@@ -96,14 +131,14 @@ export default function ProfileSetupScreen() {
                                 onChangeText={onHeightChange}
                                 maxLength={3}
                             />
-                            <Text className="text-[#00BDD6] font-bold text-2xl">cm</Text>
+                            <Text className="text-[#00BDD6] font-bold text-2xl">{t('cm')}</Text>
                         </View>
                     )}
                 </View>
 
                 <View className="px-10">
-                    <Text className="text-[#94A3B8] text-center text-[10px] font-bold uppercase leading-5 italic bg-slate-50 py-4 rounded-3xl border border-slate-100">
-                        {estimatedHeight > 0 ? displayEstimated : "Enter your height to see estimation"}
+                    <Text className="text-[#94A3B8] text-center text-[10px] font-bold uppercase leading-5 italic bg-slate-50 py-4 rounded-3xl border border-slate-100 px-6">
+                        {estimatedHeight > 0 ? displayEstimated : t('enter_height')}
                     </Text>
                 </View>
             </View>
@@ -124,7 +159,13 @@ export default function ProfileSetupScreen() {
                 finalHeight = String(Math.round((f * 30.48) + (i * 2.54)));
             }
 
-            const userId = 'user_' + Math.random().toString(36).substr(2, 9);
+            const existingProfileStr = await AsyncStorage.getItem(USER_PROFILE_KEY);
+            let userId = 'user_' + Math.random().toString(36).substr(2, 9);
+            if (existingProfileStr) {
+                const existingProfile = JSON.parse(existingProfileStr);
+                userId = existingProfile.id || userId;
+            }
+
             const today = new Date().toISOString().split('T')[0];
 
             const userData = {
@@ -136,7 +177,7 @@ export default function ProfileSetupScreen() {
                 inches: heightUnit === 'ft' ? inches : '',
                 dailyGoal,
                 setupComplete: true,
-                onboardingDate: new Date().toISOString(),
+                onboardingDate: existingProfileStr ? JSON.parse(existingProfileStr).onboardingDate : new Date().toISOString(),
                 lastActiveDate: today
             };
 
@@ -186,11 +227,11 @@ export default function ProfileSetupScreen() {
                     <ScrollView className="flex-1 px-6 pt-4" showsVerticalScrollIndicator={false}>
                         {step === 1 && (
                             <View>
-                                <Text className="text-[#1E293B] font-black text-4xl mb-3 leading-[50px]">Welcome! 👋</Text>
-                                <Text className="text-[#94A3B8] text-lg font-medium mb-12">Let's get to know you better.</Text>
+                                <Text className="text-[#1E293B] font-black text-3xl mb-3 leading-[50px]">{t('welcome')}</Text>
+                                <Text className="text-[#94A3B8] text-lg font-medium mb-12">{t('welcome_sub')}</Text>
 
                                 <View className="mb-8">
-                                    <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px] mb-4 ml-4">Your Name</Text>
+                                    <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px] mb-4 ml-4">{t('your_name')}</Text>
                                     <TextInput
                                         className="bg-white p-4 rounded-[32px] shadow-sm border border-slate-50 text-lg"
                                         placeholder="Cody Fisher"
@@ -200,7 +241,7 @@ export default function ProfileSetupScreen() {
                                 </View>
 
                                 <View className="mb-8">
-                                    <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px] mb-6 ml-4">Gender</Text>
+                                    <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px] mb-6 ml-4">{t('gender')}</Text>
                                     <View className="flex-row justify-between">
                                         <TouchableOpacity
                                             onPress={() => setProfile({ ...profile, gender: 'male' })}
@@ -212,7 +253,7 @@ export default function ProfileSetupScreen() {
                                                 color={profile.gender === 'male' ? 'white' : '#7FD7E0'}
                                                 style={{ marginRight: 8 }}
                                             />
-                                            <Text className={`font-black text-lg ${profile.gender === 'male' ? 'text-white' : '#7FD7E0'}`}>Male</Text>
+                                            <Text className={`font-black text-base ${profile.gender === 'male' ? 'text-white' : '#7FD7E0'}`}>{t('male')}</Text>
                                         </TouchableOpacity>
                                         <TouchableOpacity
                                             onPress={() => setProfile({ ...profile, gender: 'female' })}
@@ -224,7 +265,7 @@ export default function ProfileSetupScreen() {
                                                 color={profile.gender === 'female' ? 'white' : '#7FD7E0'}
                                                 style={{ marginRight: 8 }}
                                             />
-                                            <Text className={`font-black text-lg ${profile.gender === 'female' ? 'text-white' : '#7FD7E0'}`}>Female</Text>
+                                            <Text className={`font-black text-base ${profile.gender === 'female' ? 'text-white' : '#7FD7E0'}`}>{t('female')}</Text>
                                         </TouchableOpacity>
                                     </View>
                                 </View>
@@ -250,9 +291,9 @@ export default function ProfileSetupScreen() {
 
                         {step === 3 && (
                             <View className="items-center">
-                                <Text className="text-[#1E293B] font-black text-3xl mb-12">What is your weight?</Text>
+                                <Text className="text-[#1E293B] font-black text-3xl mb-12 text-center px-6">{t('weight_ques')}</Text>
                                 <View className="w-full bg-white p-12 rounded-[50px] shadow-sm border border-slate-50 items-center">
-                                    <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px] mb-6">Weight</Text>
+                                    <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px] mb-6">{t('weight')}</Text>
                                     <View className="flex-row items-baseline mb-8">
                                         <TextInput
                                             className="text-[#1E293B] font-black text-8xl text-center min-w-[150px]"
@@ -260,9 +301,9 @@ export default function ProfileSetupScreen() {
                                             value={profile.weight}
                                             onChangeText={(text) => setProfile({ ...profile, weight: text })}
                                         />
-                                        <Text className="text-[#00BDD6] font-bold text-3xl ml-2">kg</Text>
+                                        <Text className="text-[#00BDD6] font-bold text-3xl ml-2">{t('kg')}</Text>
                                     </View>
-                                    <Text className="text-[#94A3B8] text-center text-xs px-10 leading-5 italic">This algorithm will calculate your perfect hydration target.</Text>
+                                    <Text className="text-[#94A3B8] text-center text-xs px-10 leading-5 italic">{t('weight_desc')}</Text>
                                 </View>
                             </View>
                         )}
@@ -271,7 +312,7 @@ export default function ProfileSetupScreen() {
                             className="mt-14 bg-[#00BDD6] py-4 rounded-[32px] shadow-lg shadow-[#00BDD6]/40 flex-row items-center justify-center mb-20"
                             onPress={handleNext}
                         >
-                            <Text className="text-white font-black text-xl mr-3">Next</Text>
+                            <Text className="text-white font-black text-xl mr-3">{t('next')}</Text>
                         </TouchableOpacity>
                     </ScrollView>
                 </KeyboardAvoidingView>

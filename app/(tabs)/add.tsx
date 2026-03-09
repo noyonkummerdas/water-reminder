@@ -2,19 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { X, Beer, Wine, GlassWater as Lemonade, IceCream as Milk, Soup as Tea, Plus, Minus, Shovel as Shaker } from 'lucide-react-native';
+import { useTranslation } from 'react-i18next';
+
 import { router } from 'expo-router';
 import { saveIntake, getProfile, getIntakeForDate, getTodayStr } from '../../utils/storage';
 
 const DRINK_TYPES = [
     { id: 'beer', name: 'Beer', icon: Beer, color: '#F59E0B' },
     { id: 'protein', name: 'Protein', icon: Shaker, color: '#F97316' },
-    { id: 'strong', name: 'Strong alcohol', icon: Wine, color: '#EF4444' },
+    { id: 'strong_alcohol', name: 'Strong alcohol', icon: Wine, color: '#EF4444' },
     { id: 'lemonade', name: 'Lemonade', icon: Lemonade, color: '#00BDD6' },
     { id: 'milkshake', name: 'Milkshake', icon: Milk, color: '#EC4899' },
-    { id: 'herbal', name: 'Herbal tea', icon: Tea, color: '#10B981' },
+    { id: 'herbal_tea', name: 'Herbal tea', icon: Tea, color: '#10B981' },
 ];
 
+
 export default function AddDrinkScreen() {
+    const { t } = useTranslation();
+
     const [amount, setAmount] = useState(250);
     const [dailyGoal, setDailyGoal] = useState(2500);
     const [currentIntake, setCurrentIntake] = useState(0);
@@ -49,15 +54,15 @@ export default function AddDrinkScreen() {
                 >
                     <X size={22} color="#1E293B" />
                 </TouchableOpacity>
-                <Text className="text-[#1E293B] font-black text-xl">Add Drink</Text>
+                <Text className="text-[#1E293B] font-black text-xl text-center flex-1">{t("add_drink")}</Text>
                 <View className="w-11" />
             </View>
 
             <ScrollView className="flex-1 px-4 pt-4" showsVerticalScrollIndicator={false}>
                 {isGoalReached && (
                     <View className="mx-2 mb-6 bg-slate-100 p-6 rounded-[32px] border border-slate-200 items-center">
-                        <Text className="text-[#94A3B8] font-bold text-xs text-center">
-                            You have already reached your daily goal! {"\n"}Adding more is currently restricted.
+                        <Text className="text-[#94A3B8] font-bold text-xs text-center px-4">
+                            {t("add_restricted")}
                         </Text>
                     </View>
                 )}
@@ -78,7 +83,7 @@ export default function AddDrinkScreen() {
                                 >
                                     <Icon size={26} color={drink.color} />
                                 </View>
-                                <Text className="text-[#1E293B] font-bold text-[10px] text-center" numberOfLines={1}>{drink.name}</Text>
+                                <Text className="text-[#1E293B] font-bold text-[10px] text-center leading-3" numberOfLines={2}>{t(drink.id)}</Text>
                             </TouchableOpacity>
                         );
                     })}
@@ -86,10 +91,10 @@ export default function AddDrinkScreen() {
 
                 {/* Main Volume Input Card */}
                 <View className="mt-8 mx-2 bg-white p-10 rounded-[44px] shadow-sm border border-slate-50 items-center" style={{ opacity: isGoalReached ? 0.5 : 1 }}>
-                    <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px] mb-6">Volume</Text>
+                    <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px] mb-6">{t("volume")}</Text>
                     <View className="flex-row items-baseline mb-10">
                         <Text className="text-[#1E293B] font-black text-6xl">{amount}</Text>
-                        <Text className="text-[#00BDD6] font-bold text-2xl ml-2">ML</Text>
+                        <Text className="text-[#00BDD6] font-bold text-2xl ml-2">{t("ml")}</Text>
                     </View>
 
                     <View className="flex-row w-full justify-between items-center">
@@ -129,7 +134,7 @@ export default function AddDrinkScreen() {
                     className={`mt-8 mx-2 py-6 rounded-[32px] shadow-lg items-center mb-12 ${isGoalReached ? 'bg-slate-300 shadow-none' : 'bg-[#00BDD6] shadow-[#00BDD6]/40'}`}
                     onPress={() => handleAdd()}
                 >
-                    <Text className="text-white font-black text-lg">Add to Intake</Text>
+                    <Text className="text-white font-black text-xl">{t("add_intake")}</Text>
                 </TouchableOpacity>
             </ScrollView>
         </SafeAreaView>

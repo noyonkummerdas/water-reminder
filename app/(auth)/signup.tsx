@@ -3,25 +3,30 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { Mail, Lock, User, ArrowRight, ChevronLeft } from 'lucide-react-native';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 
 import { clearAllData } from '../../utils/storage';
 
 export default function SignupScreen() {
+    const { t } = useTranslation();
+
     const [name, setName] = useState('');
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const handleSignUp = async () => {
         if (!name.trim()) {
-            Alert.alert("Error", "Please enter your full name.");
+            Alert.alert(t("error"), t("enter_full_name"));
             return;
         }
         if (!email.trim() || !email.includes('@')) {
-            Alert.alert("Error", "Please enter a valid email address.");
+            Alert.alert(t("error"), t("valid_email"));
             return;
         }
         if (password.length < 6) {
-            Alert.alert("Error", "Password must be at least 6 characters long.");
+            Alert.alert(t("error"), t("password_length"));
             return;
         }
 
@@ -49,14 +54,14 @@ export default function SignupScreen() {
             >
                 <ScrollView className="flex-1 px-8" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 50 }}>
                     <View className="py-10">
-                        <Text className="text-[#1E293B] font-black text-4xl mb-3 leading-[50px]">Create Account</Text>
-                        <Text className="text-[#94A3B8] text-lg font-medium">Join us to start your hydration journey</Text>
+                        <Text className="text-[#1E293B] font-black text-4xl mb-3 leading-[50px]">{t("signup_title")}</Text>
+                        <Text className="text-[#94A3B8] text-lg font-medium">{t("signup_sub")}</Text>
                     </View>
 
                     {/* Signup Form */}
                     <View className="mb-8">
                         <View className="mb-6">
-                            <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px] mb-4 ml-4">Full Name</Text>
+                            <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px] mb-4 ml-4">{t("full_name")}</Text>
                             <View className="relative justify-center">
                                 <TextInput
                                     className="bg-white h-16 px-6 pl-16 rounded-[28px] shadow-sm border border-slate-50 text-[#1E293B] text-lg"
@@ -71,7 +76,7 @@ export default function SignupScreen() {
                         </View>
 
                         <View className="mb-6">
-                            <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px] mb-4 ml-4">Email Address</Text>
+                            <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px] mb-4 ml-4">{t("email")}</Text>
                             <View className="relative justify-center">
                                 <TextInput
                                     className="bg-white h-16 px-6 pl-16 rounded-[28px] shadow-sm border border-slate-50 text-[#1E293B] text-lg"
@@ -88,7 +93,7 @@ export default function SignupScreen() {
                         </View>
 
                         <View className="mb-10">
-                            <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px] mb-4 ml-4">Password</Text>
+                            <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px] mb-4 ml-4">{t("password")}</Text>
                             <View className="relative justify-center">
                                 <TextInput
                                     className="bg-white h-16 px-6 pl-16 rounded-[28px] shadow-sm border border-slate-50 text-[#1E293B] text-lg"
@@ -107,15 +112,15 @@ export default function SignupScreen() {
                             className="bg-[#00BDD6] py-4 rounded-[32px] shadow-lg shadow-[#00BDD6]/40 flex-row items-center justify-center mb-10"
                             onPress={handleSignUp}
                         >
-                            <Text className="text-white font-black text-xl mr-3">Sign Up</Text>
+                            <Text className="text-white font-black text-xl mr-3">{t("sign_up")}</Text>
                         </TouchableOpacity>
                     </View>
 
                     {/* Footer */}
                     <View className="flex-row justify-center items-center">
-                        <Text className="text-[#94A3B8] font-medium mr-2">Already have an account?</Text>
+                        <Text className="text-[#94A3B8] font-medium mr-2">{t("already_account")}</Text>
                         <TouchableOpacity onPress={() => router.replace('/(auth)/login')}>
-                            <Text className="text-[#00BDD6] font-black">Login</Text>
+                            <Text className="text-[#00BDD6] font-black">{t("login")}</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>

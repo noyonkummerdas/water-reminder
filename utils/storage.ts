@@ -13,9 +13,16 @@ export interface UserProfile {
     lastActiveDate: string;
 }
 
+export interface DrinkLog {
+    id: string;
+    amount: number;
+    time: string;
+}
+
 export interface DayData {
     intake: number;
     goal: number;
+    logs: DrinkLog[];
 }
 
 export const getTodayStr = () => {
@@ -26,49 +33,47 @@ export const getTodayStr = () => {
     return `${year}-${month}-${day}`;
 };
 
-const getHistoryKey = (userId: string) => `${INTAKE_HISTORY_PREFIX}${userId}`;
+const getHistoryKey = (userId: string, date: string) => `${INTAKE_HISTORY_PREFIX}${userId}_${date}`;
 
-export const saveIntake = async (amount: number, currentGoal: number, userId: string = 'default') => {
+export const saveIntake = async (amount: number, goal: number, userId: string = 'default'): Promise<number> => {
     try {
         const today = getTodayStr();
-        const key = getHistoryKey(userId);
-        const historyData = await AsyncStorage.getItem(key);
-        let history: Record<string, any> = historyData ? JSON.parse(historyData) : {};
+        const key = getHistoryKey(userId, today);
+        const existingData = await AsyncStorage.getItem(key);
 
-        let dayData: DayData = history[today] || { intake: 0, goal: currentGoal };
+        let currentData: DayData = existingData ? JSON.parse(existingData) : { intake: 0, goal: goal, logs: [] };
 
+        // Update intake and goal
         const safeAmount = isNaN(amount) ? 0 : amount;
-        dayData.intake += safeAmount;
-        dayData.goal = currentGoal;
+        currentData.intake += safeAmount;
+        currentData.goal = goal;
 
-        history[today] = dayData;
-        await AsyncStorage.setItem(key, JSON.stringify(history));
+        // Add to logs
+        if (!currentData.logs) currentData.logs = [];
+        currentData.logs.push({
+            id: Math.random().toString(36).substring(2, 11),
+            amount: safeAmount,
+            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        });
 
-        // Update profile's last active date
-        const profile = await getProfile();
-        if (profile && profile.id === userId) {
-            await AsyncStorage.setItem(USER_PROFILE_KEY, JSON.stringify({ ...profile, lastActiveDate: today }));
-        }
+        await AsyncStorage.setItem(key, JSON.stringify(currentData));
 
-        return dayData.intake;
+        return currentData.intake;
     } catch (e) {
-        console.error("Error saving intake", e);
+        console.error("Failed to save intake", e);
         return 0;
     }
 };
 
-export const getIntakeForDate = async (date: string, defaultGoal: number, userId: string = 'default'): Promise<DayData> => {
+export const getIntakeForDate = async (date: string, goal: number, userId: string = 'default'): Promise<DayData> => {
     try {
-        const key = getHistoryKey(userId);
-        const historyData = await AsyncStorage.getItem(key);
-        const history: Record<string, any> = historyData ? JSON.parse(historyData) : {};
-        const dayData = history[date];
-
-        if (dayData) return dayData;
-        return { intake: 0, goal: defaultGoal };
+        const key = getHistoryKey(userId, date);
+        const data = await AsyncStorage.getItem(key);
+        if (data) return JSON.parse(data);
+        return { intake: 0, goal: goal, logs: [] };
     } catch (e) {
         console.error("Error getting intake", e);
-        return { intake: 0, goal: defaultGoal };
+        return { intake: 0, goal: goal, logs: [] };
     }
 };
 

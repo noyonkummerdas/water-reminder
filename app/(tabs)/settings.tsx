@@ -1,182 +1,110 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import {
-    ChevronLeft,
-    User,
-    Bell,
-    Lock,
-    Users,
-    HelpCircle,
-    Info,
-    ChevronRight,
-    LogOut,
-    Droplets,
-} from 'lucide-react-native';
-import { router } from 'expo-router';
-import { getProfile, UserProfile } from '../../utils/storage';
+import { ChevronLeft, Trash2, Droplets, Clock } from 'lucide-react-native';
+import { useTranslation } from 'react-i18next';
 
-export default function SettingsScreen() {
+import { router } from 'expo-router';
+import { useFocusEffect } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getTodayStr, getIntakeForDate, getProfile, UserProfile, DayData, INTAKE_HISTORY_PREFIX } from '../../utils/storage';
+
+export default function DrinkHistoryScreen() {
+    const { t } = useTranslation();
+
+    const [history, setHistory] = useState<DayData | null>(null);
     const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
 
-    const loadProfile = useCallback(async () => {
-        try {
-            const profile = await getProfile();
-            if (profile) {
-                setUserProfile(profile);
-            }
-        } catch (error) {
-            console.error("Settings: Error loading profile:", error);
-        }
+    const loadData = useCallback(async () => {
+        const profile = await getProfile();
+        setUserProfile(profile);
+        const data = await getIntakeForDate(getTodayStr(), profile?.dailyGoal || 2500, profile?.id || 'default');
+        setHistory(data);
     }, []);
 
-    useEffect(() => {
-        loadProfile();
-    }, [loadProfile]);
-
-    const SettingItem = ({ icon: Icon, label, color, onPress, showBorder = true }: any) => (
-        <TouchableOpacity
-            onPress={onPress}
-            className={`flex-row items-center justify-between py-5 ${showBorder ? 'border-b border-slate-50' : ''}`}
-        >
-            <View className="flex-row items-center">
-                <View className="w-11 h-11 items-center justify-center rounded-2xl bg-slate-50/50 mr-4">
-                    <Icon size={20} color={color || "#94A3B8"} strokeWidth={2} />
-                </View>
-                <Text className="text-[#334155] font-medium text-base">{label}</Text>
-            </View>
-            <ChevronRight size={18} color="#CBD5E1" strokeWidth={2} />
-        </TouchableOpacity>
+    useFocusEffect(
+        useCallback(() => {
+            loadData();
+        }, [loadData])
     );
 
-    const handleSignOut = () => {
+    const handleDeleteLog = async (logId: string) => {
         Alert.alert(
-            "Sign Out",
-            "Are you sure you want to log out?",
+            t("delete_entry"),
+            t("delete_confirm"),
             [
-                { text: "Cancel", style: "cancel" },
+                { text: t("cancel"), style: "cancel" },
                 {
-                    text: "Logout",
+                    text: t("delete"),
                     style: "destructive",
-                    onPress: () => router.replace('/(auth)/login')
+                    onPress: async () => {
+                        if (!history || !userProfile) return;
+                        const newLogs = history.logs.filter(log => log.id !== logId);
+                        const newIntake = newLogs.reduce((acc, log) => acc + log.amount, 0);
+                        const updatedData = { ...history, logs: newLogs, intake: newIntake };
+
+                        const key = `${INTAKE_HISTORY_PREFIX}${userProfile.id}_${getTodayStr()}`;
+                        await AsyncStorage.setItem(key, JSON.stringify(updatedData));
+                        setHistory(updatedData);
+                    }
                 }
             ]
         );
-    };
-
-    const handleComingSoon = (feature: string) => {
-        Alert.alert("Coming Soon", `${feature} will be available in the next update! 🚀`);
-    };
-
-    const handleProfileEdit = () => {
-        // Redirect to profile setup to update info
-        router.push('/profile-setup');
     };
 
     return (
         <SafeAreaView className="flex-1 bg-[#F8FAFB]" edges={['top']}>
             <View className="px-6 py-4 flex-row justify-between items-center">
                 <TouchableOpacity
-                    onPress={() => router.canGoBack() ? router.back() : router.replace('/(tabs)')}
+                    onPress={() => router.replace('/(tabs)')}
                     className="w-11 h-11 items-center justify-center rounded-2xl bg-white shadow-sm border border-slate-50"
                 >
                     <ChevronLeft size={22} color="#1E293B" />
                 </TouchableOpacity>
-                <Text className="text-[#1E293B] font-black text-xl">Settings</Text>
+                <Text className="text-[#1E293B] font-black text-xl text-center flex-1">{t("history")}</Text>
                 <View className="w-11" />
             </View>
 
             <ScrollView className="flex-1 px-6" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 120 }}>
-                {/* User Info Card */}
                 <View className="py-6">
-                    <TouchableOpacity
-                        onPress={handleProfileEdit}
-                        className="bg-white p-6 rounded-[20px] shadow-sm border border-slate-50 flex-row items-center"
-                    >
-                        <View className="w-16 h-16 rounded-full bg-slate-100 border-2 border-white shadow-sm overflow-hidden mr-4 items-center justify-center">
-                            <User size={30} color="#00BDD6" />
+                    <View className="bg-[#00BDD6] p-8 rounded-[32px] shadow-lg shadow-[#00BDD6]/20 flex-row items-center justify-between">
+                        <View>
+                            <Text className="text-white/70 font-bold text-[10px] uppercase tracking-[1px] mb-1">{t("total_drank")}</Text>
+                            <View className="flex-row items-baseline">
+                                <Text className="text-white font-black text-4xl">{history?.intake || 0}</Text>
+                                <Text className="text-white/80 font-bold text-lg ml-2">{t("ml")}</Text>
+                            </View>
                         </View>
-                        <View className="flex-1">
-                            <Text className="text-[#1E293B] font-black text-xl">{userProfile?.name || 'User'}</Text>
-                            <Text className="text-[#94A3B8] font-bold text-xs mt-1">Goal: {userProfile?.dailyGoal} ml</Text>
+                        <View className="bg-white/20 p-4 rounded-2xl">
+                            <Droplets size={32} color="white" />
                         </View>
-                        <TouchableOpacity
-                            onPress={() => Alert.alert("Success", "All notifications are active! 🔔")}
-                            className="bg-[#E6F4FE] p-3 rounded-2xl shadow-sm"
-                        >
-                            <Bell size={20} color="#00BDD6" strokeWidth={2.5} />
-                        </TouchableOpacity>
-                    </TouchableOpacity>
-                </View>
-
-                {/* Physical Information Sections */}
-                <View className="mb-8">
-                    <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px] mb-4 ml-4">Body Profile</Text>
-                    <View className="bg-white px-6 rounded-[20px] shadow-sm border border-slate-50">
-                        <SettingItem
-                            icon={User}
-                            label={`Weight: ${userProfile?.weight || '--'} kg`}
-                            color="#7DD3FC"
-                            showBorder={true}
-                            onPress={handleProfileEdit}
-                        />
-                        <SettingItem
-                            icon={Info}
-                            label={`Height: ${userProfile?.height || '--'} cm`}
-                            color="#FCD34D"
-                            showBorder={true}
-                            onPress={handleProfileEdit}
-                        />
-                        <SettingItem
-                            icon={Droplets}
-                            label={`Daily Goal: ${userProfile?.dailyGoal || '--'} ml`}
-                            color="#7DD3FC"
-                            showBorder={false}
-                            onPress={handleProfileEdit}
-                        />
                     </View>
                 </View>
 
-                {/* Static Options with Interactions */}
-                <View className="mb-10">
-                    <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px] mb-4 ml-4">App Settings</Text>
-                    <View className="bg-white px-6 rounded-[20px] shadow-sm border border-slate-50">
-                        <SettingItem
-                            icon={Lock}
-                            label="Change Password"
-                            color="#FCA5A5"
-                            onPress={() => router.push('/settings/password')}
-                        />
-                        <SettingItem
-                            icon={Users}
-                            label="Invite Friends"
-                            color="#86EFAC"
-                            onPress={() => router.push('/settings/invite')}
-                        />
-                        <SettingItem
-                            icon={HelpCircle}
-                            label="FAQs & Support"
-                            color="#A5B4FC"
-                            onPress={() => router.push('/settings/faq')}
-                        />
-                        <SettingItem
-                            icon={Info}
-                            label="About AquaFlow"
-                            color="#94A3B8"
-                            showBorder={false}
-                            onPress={() => router.push('/settings/about')}
-                        />
-                    </View>
-                </View>
+                <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px] mb-4 ml-4">{t("logs")}</Text>
 
-                {/* Big Sign Out Button */}
-                <TouchableOpacity
-                    className="bg-[#00BDD6] py-4 flex-row rounded-[32px] shadow-lg shadow-[#00BDD6]/40 items-center justify-center space-x-3 mb-12"
-                    onPress={handleSignOut}
-                >
-                    <LogOut size={20} color="white" strokeWidth={2.5} />
-                    <Text className="text-white font-black text-lg">Sign out</Text>
-                </TouchableOpacity>
+                {history?.logs && history.logs.length > 0 ? (
+                    history.logs.map((log) => (
+                        <View key={log.id} className="bg-white p-5 rounded-[24px] shadow-sm border border-slate-50 mb-3 flex-row items-center justify-between">
+                            <View className="flex-row items-center">
+                                <View className="w-12 h-12 bg-slate-50 rounded-2xl items-center justify-center mr-4">
+                                    <Clock size={20} color="#00BDD6" />
+                                </View>
+                                <View>
+                                    <Text className="text-[#1E293B] font-black text-base">{log.amount} {t("ml")}</Text>
+                                    <Text className="text-[#94A3B8] font-bold text-xs">{log.time}</Text>
+                                </View>
+                            </View>
+                            <TouchableOpacity onPress={() => handleDeleteLog(log.id)} className="p-2">
+                                <Trash2 size={18} color="#FF6E71" strokeWidth={2.5} />
+                            </TouchableOpacity>
+                        </View>
+                    )).reverse() // Show newest first
+                ) : (
+                    <View className="py-12 items-center justify-center">
+                        <Text className="text-[#94A3B8] font-medium text-center">{t("no_logs")}</Text>
+                    </View>
+                )}
             </ScrollView>
         </SafeAreaView>
     );

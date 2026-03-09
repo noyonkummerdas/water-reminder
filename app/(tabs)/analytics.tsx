@@ -2,6 +2,8 @@ import React, { useState, useCallback, useMemo } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ChevronLeft, Calendar as CalendarIcon, Droplets, TrendingUp, ChevronRight } from 'lucide-react-native';
+import { useTranslation } from 'react-i18next';
+
 import { router } from 'expo-router';
 import { useFocusEffect } from 'expo-router';
 import Svg, { Circle } from 'react-native-svg';
@@ -10,6 +12,8 @@ import { getTodayStr, getIntakeForDate, getProfile, UserProfile } from '../../ut
 const { width } = Dimensions.get('window');
 
 export default function AnalyticsScreen() {
+    const { t } = useTranslation();
+
     const todayStr = getTodayStr();
     const [selectedDate, setSelectedDate] = useState(todayStr);
     const [viewMode, setViewMode] = useState<'week' | 'month'>('week');
@@ -85,7 +89,7 @@ export default function AnalyticsScreen() {
                     >
                         <ChevronLeft size={22} color="#1E293B" />
                     </TouchableOpacity>
-                    <Text className="text-[#1E293B] font-black text-xl">Statistics</Text>
+                    <Text className="text-[#1E293B] font-black text-xl text-center flex-1">{t("statistics")}</Text>
                     <View className="w-11" />
                 </View>
 
@@ -96,7 +100,7 @@ export default function AnalyticsScreen() {
                             className="flex-row items-center bg-[#00BDD6] px-5 py-3.5 rounded-[16px] shadow-lg"
                         >
                             <Text className="text-white font-bold text-sm mr-2">
-                                {viewMode === 'week' ? 'Recent Days' : `${currentMonthLabel} ${currentYear}`}
+                                {viewMode === 'week' ? t("recent_days") : `${currentMonthLabel} ${currentYear}`}
                             </Text>
                             <ChevronRight size={16} color="white" style={{ transform: [{ rotate: '90deg' }] }} />
                         </TouchableOpacity>
@@ -150,8 +154,8 @@ export default function AnalyticsScreen() {
 
                     <View className="px-6 py-4">
                         <View className="bg-white p-8 rounded-[10px] shadow-lg border border-slate-100">
-                            <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[2px] mb-6">
-                                {selectedDate === todayStr ? "Today's Progress" : `Progress for ${selectedDate}`}
+                            <Text className="text-[#94A3B8] text-[10px] font-bold uppercase tracking-[ link text](file:///d%3A/Techsoul/water-reminder/app/%28tabs%29/analytics.tsx#L150-160)2px] mb-6">
+                                {selectedDate === todayStr ? t("today_progress") : t("progress_for", { date: selectedDate })}
                             </Text>
                             <View className="flex-row items-center justify-between">
                                 <View>
@@ -160,7 +164,7 @@ export default function AnalyticsScreen() {
                                         <Text className="text-[#1E293B] font-bold text-2xl ml-1">%</Text>
                                     </View>
                                     <Text className="text-[#94A3B8] text-xs mt-2 w-36 leading-5">
-                                        {percentage >= 100 ? 'Hydration complete! 🌟' : 'Keep drinking to reach your goal!'}
+                                        {percentage >= 100 ? t("hydration_complete") : t("keep_drinking")}
                                     </Text>
                                 </View>
                                 <View className="relative">
@@ -189,7 +193,7 @@ export default function AnalyticsScreen() {
                             <View className="bg-[#E6F4FE] w-12 h-12 items-center justify-center rounded-xl mb-4">
                                 <Droplets size={24} color="#00BDD6" />
                             </View>
-                            <Text className="text-[#94A3B8] text-[9px] font-bold uppercase tracking-wider mb-2">Total Intake</Text>
+                            <Text className="text-[#94A3B8] text-[9px] font-bold uppercase tracking-wider mb-2">{t("total_intake")}</Text>
                             <View className="flex-row items-baseline">
                                 <Text className="text-[#1E293B] font-black text-2xl">{(dayData.intake / 1000).toFixed(2)}</Text>
                                 <Text className="text-[#94A3B8] font-bold text-base ml-1.5">L</Text>
@@ -200,7 +204,7 @@ export default function AnalyticsScreen() {
                             <View className="bg-[#DCFCE7] w-12 h-12 items-center justify-center rounded-xl mb-4">
                                 <TrendingUp size={24} color="#22C55E" />
                             </View>
-                            <Text className="text-[#94A3B8] text-[9px] font-bold uppercase tracking-wider mb-2">Daily Goal</Text>
+                            <Text className="text-[#94A3B8] text-[9px] font-bold uppercase tracking-wider mb-2">{t("daily_goal")}</Text>
                             <View className="flex-row items-baseline">
                                 <Text className="text-[#1E293B] font-black text-2xl">{(dayData.goal / 1000).toFixed(1)}</Text>
                                 <Text className="text-[#94A3B8] font-bold text-base ml-1.5">L</Text>
