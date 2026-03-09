@@ -203,6 +203,19 @@ export default function HomeScreen() {
     const [isLoading, setIsLoading] = useState(true);
     const [nextReminder, setNextReminder] = useState<{ time: string, amount: number } | null>(null);
 
+    const formatAmPm = (time: string): string => {
+        if (!time) return '';
+        if (time.includes('AM') || time.includes('PM') || time.includes('am') || time.includes('pm')) return time;
+        const parts = time.split(':');
+        if (parts.length < 2) return time;
+        const h = parseInt(parts[0], 10);
+        const m = parseInt(parts[1], 10);
+        if (isNaN(h) || isNaN(m)) return time;
+        const period = h >= 12 ? 'PM' : 'AM';
+        const hour = h % 12 === 0 ? 12 : h % 12;
+        return `${hour}:${String(m).padStart(2, '0')} ${period}`;
+    };
+
     const loadData = useCallback(async () => {
         setIsLoading(true);
         const profile = await getProfile();
@@ -273,7 +286,7 @@ export default function HomeScreen() {
                 <View className="px-6 py-6 flex-row justify-between items-center">
                     <View>
                         <Text className="text-[#757575] dark:text-[#94A3B8] text-sm font-bold tracking-tight mb-1">
-                            {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} • 🔔
+                            {formatAmPm(`${String(new Date().getHours()).padStart(2, '0')}:${String(new Date().getMinutes()).padStart(2, '0')}`)} • 🔔
                         </Text>
                         <Text className="text-[#212121] dark:text-white font-black text-3xl tracking-tight">
                             {t("hello")}, {userName}
@@ -320,7 +333,7 @@ export default function HomeScreen() {
                                 <Clock size={32} color="#00BCD4" strokeWidth={2.5} />
                                 <View className="ml-4">
                                     <Text className="text-[#212121] dark:text-white font-black text-4xl tracking-tighter">
-                                        {nextReminder ? nextReminder.time : "--:--"}
+                                        {nextReminder ? formatAmPm(nextReminder.time) : "--:--"}
                                     </Text>
                                     {nextReminder && (
                                         <Text className="text-[#0288D1] font-bold text-xs mt-1">
