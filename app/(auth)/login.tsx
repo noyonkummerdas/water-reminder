@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, Animated as RNAnimated, KeyboardAvoidingView, Platform, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import { Mail, Lock, ArrowRight, Github } from 'lucide-react-native';
+import { Mail, Lock, ArrowRight, Eye, EyeOff } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 
 export default function LoginScreen() {
@@ -10,6 +10,7 @@ export default function LoginScreen() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleLogin = () => {
         if (!email.trim()) {
@@ -86,16 +87,25 @@ export default function LoginScreen() {
                             </View>
                             <View className="relative">
                                 <TextInput
-                                    className="bg-[#F5F5F5] p-5 pl-16 rounded-[28px] border border-[#E0E0E0] text-base text-[#212121]"
+                                    className="bg-[#F5F5F5] p-5 pl-16 pr-14 rounded-[28px] border border-[#E0E0E0] text-base text-[#212121]"
                                     placeholder="••••••••"
                                     placeholderTextColor="#E0E0E0"
-                                    secureTextEntry
+                                    secureTextEntry={!showPassword}
                                     value={password}
                                     onChangeText={setPassword}
                                 />
                                 <View className="absolute left-6 top-6">
                                     <Lock size={20} color="#00BCD4" strokeWidth={2.5} />
                                 </View>
+                                <TouchableOpacity
+                                    onPress={() => setShowPassword(!showPassword)}
+                                    className="absolute right-5 top-5 p-1"
+                                >
+                                    {showPassword
+                                        ? <EyeOff size={20} color="#757575" strokeWidth={2.5} />
+                                        : <Eye size={20} color="#757575" strokeWidth={2.5} />
+                                    }
+                                </TouchableOpacity>
                             </View>
                         </View>
 
