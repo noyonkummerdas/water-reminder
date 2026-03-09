@@ -59,6 +59,13 @@ export async function registerForPushNotificationsAsync() {
 }
 
 export async function scheduleWaterReminder() {
+    // Check permissions before scheduling
+    const { status } = await Notifications.getPermissionsAsync();
+    if (status !== 'granted') {
+        console.log('Cannot schedule notifications: Permission not granted');
+        return;
+    }
+
     // Clear any existing reminders first to avoid double-ups
     await Notifications.cancelAllScheduledNotificationsAsync();
 
@@ -67,32 +74,40 @@ export async function scheduleWaterReminder() {
 
     for (const hour of hours) {
         try {
+            const trigger: any = Platform.OS === 'ios'
+                ? {
+                    type: 'calendar',
+                    hour: hour,
+                    minute: 0,
+                    repeats: true,
+                }
+                : {
+                    // For Android, 'daily' type is supported for recurring time notifications
+                    type: 'daily',
+                    hour: hour,
+                    minute: 0,
+                    // channelId inside trigger can also satisfy the validator
+                    channelId: 'default',
+                };
+
             await Notifications.scheduleNotificationAsync({
                 content: {
                     title: "Time to hydrate! 💧",
                     body: "Drinking water regularly keeps you energized and focused. Take a sip now!",
                     data: { screen: 'index' },
-                    // In modern Expo, channelId is at the top level of the content object for Android
                     // @ts-ignore
                     channelId: 'default',
-                },
-                trigger: Platform.OS === 'ios' ? {
-                    type: 'calendar',
-                    hour: hour,
-                    minute: 0,
-                    repeats: true,
-                } : {
-                    hour: hour,
-                    minute: 0,
-                    repeats: true,
+                    // @ts-ignore
+                    priority: Notifications.AndroidNotificationPriority.HIGH,
                 } as any,
+                trigger,
             });
         } catch (innerError) {
             console.error(`Failed to schedule notification for hour ${hour}:`, innerError);
         }
     }
 
-    console.log('Water reminders scheduled!');
+    console.log('Water reminders scheduled successfully!');
 }
 
 export async function cancelAllNotifications() {
