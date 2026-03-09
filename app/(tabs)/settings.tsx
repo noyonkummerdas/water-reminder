@@ -19,6 +19,23 @@ export default function DrinkHistoryScreen() {
     const [reminderStats, setReminderStats] = useState({ total: 0, left: 0 });
     const [fullSchedule, setFullSchedule] = useState<{ time: string, amount: number }[]>([]);
 
+    const formatAmPm = (time: string): string => {
+        if (!time) return '';
+        // If already has AM/PM (old locale format), return as-is
+        if (time.includes('AM') || time.includes('PM') || time.includes('am') || time.includes('pm')) {
+            return time;
+        }
+        // Otherwise parse as HH:MM (24-hour format)
+        const parts = time.split(':');
+        if (parts.length < 2) return time;
+        const h = parseInt(parts[0], 10);
+        const m = parseInt(parts[1], 10);
+        if (isNaN(h) || isNaN(m)) return time;
+        const period = h >= 12 ? 'PM' : 'AM';
+        const hour = h % 12 === 0 ? 12 : h % 12;
+        return `${hour}:${String(m).padStart(2, '0')} ${period}`;
+    };
+
     const loadData = useCallback(async () => {
         const profile = await getProfile();
         setUserProfile(profile);
@@ -138,7 +155,7 @@ export default function DrinkHistoryScreen() {
                                                 {item.amount} {t("ml")}
                                             </Text>
                                             <Text className={`${hasPassed ? 'text-slate-400' : 'text-[#94A3B8]'} font-bold text-xs mt-0.5`}>
-                                                {item.time}
+                                                {formatAmPm(item.time)}
                                             </Text>
                                         </View>
                                     </View>
@@ -164,7 +181,7 @@ export default function DrinkHistoryScreen() {
                                 </View>
                                 <View>
                                     <Text className="text-[#1E293B] dark:text-white font-black text-base">{log.amount} {t("ml")}</Text>
-                                    <Text className="text-[#94A3B8] dark:text-slate-400 font-bold text-xs">{log.time}</Text>
+                                    <Text className="text-[#94A3B8] dark:text-slate-400 font-bold text-xs">{formatAmPm(log.time)}</Text>
                                 </View>
                             </View>
                             <TouchableOpacity onPress={() => handleDeleteLog(log.id)} className="p-2">

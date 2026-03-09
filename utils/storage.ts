@@ -52,10 +52,13 @@ export const saveIntake = async (amount: number, goal: number, userId: string = 
 
         // Add to logs
         if (!currentData.logs) currentData.logs = [];
+        const now = new Date();
+        const h = String(now.getHours()).padStart(2, '0');
+        const min = String(now.getMinutes()).padStart(2, '0');
         currentData.logs.push({
             id: Math.random().toString(36).substring(2, 11),
             amount: safeAmount,
-            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            time: `${h}:${min}`
         });
 
         await AsyncStorage.setItem(key, JSON.stringify(currentData));

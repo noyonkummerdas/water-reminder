@@ -6,15 +6,15 @@ import { View, Dimensions, StyleSheet } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 
 const { width } = Dimensions.get('window');
-const TAB_BAR_HEIGHT = 85;
+const TAB_BAR_HEIGHT = 95;
 
 const TabBarBackground = () => (
     <View style={StyleSheet.absoluteFill}>
         <View style={{
             backgroundColor: 'white',
             height: TAB_BAR_HEIGHT,
-            borderTopLeftRadius: 35,
-            borderTopRightRadius: 35,
+            borderTopLeftRadius: 16,
+            borderTopRightRadius: 16,
             shadowColor: '#000',
             shadowOffset: { width: 0, height: -12 },
             shadowOpacity: 0.06,
@@ -23,7 +23,7 @@ const TabBarBackground = () => (
         }}>
             <Svg width={width} height={TAB_BAR_HEIGHT} viewBox={`0 0 ${width} ${TAB_BAR_HEIGHT}`}>
                 <Path
-                    d={`M 0 35 C 0 15.664 15.664 0 35 0 L ${width / 2 - 45} 0 C ${width / 2 - 25} 0 ${width / 2 - 22} 38 ${width / 2} 38 C ${width / 2 + 22} 38 ${width / 2 + 25} 0 ${width / 2 + 45} 0 L ${width - 35} 0 C ${width - 15.664} 0 ${width} 15.664 ${width} 35 L ${width} ${TAB_BAR_HEIGHT} L 0 ${TAB_BAR_HEIGHT} Z`}
+                    d={`M 0 20 C 0 8.954 8.954 0 20 0 L ${width / 2 - 45} 0 C ${width / 2 - 25} 0 ${width / 2 - 22} 38 ${width / 2} 38 C ${width / 2 + 22} 38 ${width / 2 + 25} 0 ${width / 2 + 45} 0 L ${width - 20} 0 C ${width - 8.954} 0 ${width} 8.954 ${width} 20 L ${width} ${TAB_BAR_HEIGHT} L 0 ${TAB_BAR_HEIGHT} Z`}
                     fill="white"
                 />
             </Svg>
