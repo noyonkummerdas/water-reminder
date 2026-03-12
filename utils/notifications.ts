@@ -2,27 +2,32 @@ import * as Device from 'expo-device';
 import Constants from 'expo-constants';
 import { Platform } from 'react-native';
 
+// Set this to false to completely disable all notification logic
+const ENABLE_NOTIFICATIONS = false;
+
 // We'll require expo-notifications only when needed or in a safe way
 let Notifications: any;
 try {
-    Notifications = require('expo-notifications');
+    if (ENABLE_NOTIFICATIONS) {
+        Notifications = require('expo-notifications');
 
-    // Configure how notifications are handled when the app is open
-    Notifications.setNotificationHandler({
-        handleNotification: async () => ({
-            shouldShowAlert: true,
-            shouldPlaySound: true,
-            shouldSetBadge: true,
-            shouldShowBanner: true,
-            shouldShowList: true,
-        }),
-    });
+        // Configure how notifications are handled when the app is open
+        Notifications.setNotificationHandler({
+            handleNotification: async () => ({
+                shouldShowAlert: true,
+                shouldPlaySound: true,
+                shouldSetBadge: true,
+                shouldShowBanner: true,
+                shouldShowList: true,
+            }),
+        });
+    }
 } catch (e) {
     console.error('Failed to load expo-notifications:', e);
 }
 
 export async function registerForPushNotificationsAsync() {
-    if (!Notifications) return;
+    if (!ENABLE_NOTIFICATIONS || !Notifications) return;
     let token;
 
     if (Platform.OS === 'android') {
@@ -78,7 +83,7 @@ export async function registerForPushNotificationsAsync() {
 }
 
 export async function scheduleWaterReminder() {
-    if (!Notifications) return;
+    if (!ENABLE_NOTIFICATIONS || !Notifications) return;
 
     // Check permissions before scheduling
     const { status } = await Notifications.getPermissionsAsync();
@@ -132,7 +137,7 @@ export async function scheduleWaterReminder() {
 }
 
 export async function cancelAllNotifications() {
-    if (Notifications) {
+    if (ENABLE_NOTIFICATIONS && Notifications) {
         await Notifications.cancelAllScheduledNotificationsAsync();
     }
 }
