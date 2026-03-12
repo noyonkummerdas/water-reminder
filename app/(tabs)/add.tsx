@@ -108,7 +108,7 @@ export default function AddDrinkScreen() {
                             <Minus size={24} color={colorScheme === 'dark' ? "#F8FAFC" : "#1E293B"} strokeWidth={2.5} />
                         </TouchableOpacity>
 
-                        <View className="flex-row px-2 py-4">
+                        <View className="flex-row">
                             {[100, 250, 500].map(val => (
                                 <TouchableOpacity
                                     key={val}
