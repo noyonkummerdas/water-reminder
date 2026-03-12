@@ -99,7 +99,7 @@ export default function AddDrinkScreen() {
                         <Text className="text-[#00BDD6] font-bold text-2xl ml-2">{t("ml")}</Text>
                     </View>
 
-                    <View className="flex-row w-full justify-between items-center">
+                    <View className="flex-row w-full justify-center items-center gap-4">
                         <TouchableOpacity
                             disabled={isGoalReached}
                             className="w-16 h-16 bg-[#F8FAFB] dark:bg-slate-800 rounded-2xl items-center justify-center border border-slate-100 dark:border-slate-700 shadow-sm"
