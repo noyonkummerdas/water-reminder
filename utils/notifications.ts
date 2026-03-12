@@ -39,6 +39,12 @@ export async function registerForPushNotificationsAsync() {
         }
 
         try {
+            const isExpoGo = Constants.executionEnvironment === 'storeClient';
+            if (isExpoGo) {
+                console.log('Push notifications are not supported in Expo Go on SDK 53+. Skipping token registration.');
+                return;
+            }
+
             const projectId = Constants.expoConfig?.extra?.eas?.projectId ?? Constants.easConfig?.projectId;
             if (!projectId) {
                 console.log('No projectId found. Skipping Expo push token registration.');
@@ -49,7 +55,7 @@ export async function registerForPushNotificationsAsync() {
             })).data;
             console.log('Push Token:', token);
         } catch (e) {
-            console.log('Error fetching push token (this is normal in development if EAS is not configured):', e);
+            console.log('Error fetching push token:', e);
         }
     } else {
         console.log('Must use physical device for Push Notifications');
